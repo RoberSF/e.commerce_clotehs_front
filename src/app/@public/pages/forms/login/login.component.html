@@ -1,0 +1,78 @@
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-pic js-tilt" data-tilt>
+                <img src="assets/images/img-01.png" alt="IMG">
+            </div>
+
+            <form ngNativeValidate #form="ngForm" (ngSubmit)="logIn(form)" class="login100-form validate-form">
+                <span class="login100-form-title">
+                    Usuario
+                </span>
+
+                <div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+                    <!-- <input class="input100" type="text" name="email" placeholder="Email"> -->
+                    <input #email="ngModel" [(ngModel)]="login.email" name="email " class="form-control input100 " type="email " required placeholder="Email " pattern="^[a-zA-Z0-9.!#$%& '*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$">
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="fa fa-envelope" aria-hidden="true"></i>
+                    </span>
+                    <div class="alert alert-danger" *ngIf="email.invalid && (email.dirty || email.touched)">
+                        <div *ngIf="email.errors.required">
+                            Introduzca un correo electrónico válido por favor
+                        </div>
+                        <div *ngIf="email.errors && email.errors.pattern">
+                            El correo electrónico no sigue el formato correcto. Sigue este ejemplo: example@example.com
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="wrap-input100 validate-input" data-validate="Password is required">
+                    <!-- <input class="input100" type="password" name="pass" placeholder="Password"> -->
+                    <input #password="ngModel" [(ngModel)]="login.password" ngModel name="password" class="form-control input100" type="password" required placeholder="Password">
+                    <div class="alert alert-danger" *ngIf="password.invalid && (password.dirty || password.touched)">
+                        <div *ngIf="password.errors.required">
+                            Introduzca una contraseña por favor
+                        </div>
+                    </div>
+                    <span class="focus-input100"></span>
+                    <span class="symbol-input100">
+                        <i class="fa fa-lock" aria-hidden="true"></i>
+                    </span>
+                </div>
+
+                <div class="form-group ">
+                    <div class="col-md-12">
+                        <div class="checkbox checkbox-primary pull-left p-t-0">
+                            <input [ngModel]="rememeberme" name="rememberMe" id="checkbox-signup" type="checkbox" class="filled-in chk-col-light-blue">
+                            <label for="checkbox-signup"> Recuérdame </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-login100-form-btn">
+                    <button [disabled]="!form.valid" class="login100-form-btn" type="submit">
+                        Login
+                    </button>
+                </div>
+
+                <div class="text-center p-t-12">
+                    <span class="txt1">
+                        Olvidaste
+                    </span>
+                    <a routerLink="/forgot" id="to-recover" class="text-dark pull-right" class="txt2" href="#"><i class="fa fa-lock m-r-5"></i>
+                        usuario / contraseña?
+                    </a>
+                </div>
+
+                <div class="text-center p-t-136">
+                    <a class="txt2" routerLink="/register">
+                        Create tu cuenta
+                        <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,9 @@
+@import "./../../../pages/admin.component.scss";
+#sidebar-wrapper {
+    background-color: $admin-primary-color; // Este color está definido en una variable en color.scss. Dicho scss hay que importarlo
+    height: 100%;
+}
+
+.sidebar-heading a {
+    color: whitesmoke;
+}

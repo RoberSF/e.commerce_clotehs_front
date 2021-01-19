@@ -1,0 +1,24 @@
+<div class="container">
+    <h1>FAQ - Preguntas frecuentes</h1>
+    <p>A continuación las preguntas más frecuentes realizadas por los clientes y sus correspondientes respuestas.</p>
+    <button type="button" class="btn btn-sm btn-outline-danger ml-2" (click)="acc.collapseAll()">Cerrar todas</button><br>
+    <hr>
+    <ngb-accordion #acc="ngbAccordion">
+        <ngb-panel id="toggle-1" title="¿Qué métodos de pago están disponibles?">
+            <ng-template ngbPanelContent>
+                Los pagos se realizan mediante tarjeta de crédito.
+            </ng-template>
+        </ngb-panel>
+        <ngb-panel id="toggle-2" title="¿Todavía está en desarrollo la web?">
+            <ng-template ngbPanelContent>
+                Primeramente, darte las gracias por navegar por nuestra web. Trabajamos duro para ser mejores cada día. Efectivamente, la web sigue en desarrollo por lo que si surge algún problema no dudes en hacérnoslo llegar para poder mejorar!! :)
+            </ng-template>
+        </ngb-panel>
+    </ngb-accordion>
+
+    <hr/>
+    <button type="button" class="btn btn-sm btn-outline-danger ml-2" (click)="acc.collapseAll()">Cerrar todas</button>
+    <!-- <button class="btn btn-sm btn-outline-primary mr-2" (click)="acc.toggle('toggle-1')">Toggle first</button>
+    <button class="btn btn-sm btn-outline-primary mr-2" (click)="acc.toggle('toggle-2')">Toggle second</button> -->
+
+</div>

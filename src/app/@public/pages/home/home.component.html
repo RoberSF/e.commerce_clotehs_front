@@ -1,0 +1,22 @@
+<div class="container-fluid" *ngIf="!loading">
+    <div class="row">
+        <div class="carousel">
+
+            <shop-carousel-items [items]="items "></shop-carousel-items>
+        </div>
+        <div>
+            <p>Cosas</p>
+        </div>
+    </div>
+
+    <app-product-categori-list *ngIf="listOne " [title]=" 'Juegos por plataforma PC' " [productList]="listOne " [showDesc]=false>
+    </app-product-categori-list>
+
+
+    <app-product-categori-list *ngIf="listTwo " [title]=" 'Juegos por menos 40 €' " [productList]="listTwo " [showDesc]=false>
+    </app-product-categori-list>
+
+    <app-product-categori-list *ngIf="listThree " [title]=" 'Juegos de PC' " [productList]="listThree " [showDesc]=false>
+    </app-product-categori-list>
+
+</div>

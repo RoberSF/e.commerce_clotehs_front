@@ -1,0 +1,29 @@
+@import './colors.scss';
+.price {
+    font-size: 22px;
+    font-weight: 800;
+    color: $price-primary-color;
+    text-align: left;
+    margin-left: 5px;
+    margin-bottom: 12px;
+}
+
+.price span {
+    font-size: 18px;
+    font-weight: 400;
+    color: $price-discount;
+    text-align: left;
+    margin-left: 5px;
+    margin-bottom: 12px;
+    text-decoration: line-through;
+}
+
+.price span.discount-percentage {
+    text-decoration: none; // con esto invalidamos justo el de arriba
+}
+
+.price-total {
+    font-weight: bold;
+    font-size: 20px;
+    margin-top: -7;
+}

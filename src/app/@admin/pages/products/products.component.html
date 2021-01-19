@@ -1,0 +1,96 @@
+<app-table-pagination (manageItem)="buttonsEdit($event)" [query]="query" [context]="context" [itemsPerPage]="itemsPerPage" [include]="include" [resultData]="resultData" [tableColumns]="columns" [filterActiveValue]="filterActiveValue">
+</app-table-pagination>
+
+
+
+<div id="modalInfo" class="fondo-negro animated fadeIn" *ngIf="modal">
+    <div class="modal" style="display: block;" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+                <div class="modal-body text-center">
+                    <form #form="ngForm">
+
+                        <label for="name"><b>Nombre</b></label>
+                        <input type="text" placeholder="Introduzca su nombre" name="name" #name="ngModel" [(ngModel)]="register.name" class="form-control" [ngClass]="{'is-valid': name.valid, 'is-invalid': name.invalid}" required />
+                        <div class="alert alert-danger" *ngIf="name.invalid && (name.dirty || name.touched)">
+                            <div *ngIf="name.errors.required">
+                                Introduzca un nombre por favor
+                            </div>
+                        </div>
+
+                        <label for="categoria"><b>Categoria</b></label>
+                        <input type="text" placeholder="Introduzca una categoria" name="categoria" #categoria="ngModel" [(ngModel)]="register.categoria" class="form-control" [ngClass]="{'is-valid': categoria.valid, 'is-invalid': categoria.invalid}" required />
+                        <div class="alert alert-danger" *ngIf="categoria.invalid && (categoria.dirty || categoria.touched)">
+                            <div *ngIf="categoria.errors.required">
+                                Introduzca una categoria
+                            </div>
+                        </div>
+
+                        <label for="description"><b>Descripción</b></label>
+                        <input type="text" placeholder="Introduzca descripcion" name="description" #description="ngModel" [(ngModel)]="register.description" class="form-control" [ngClass]="{'is-valid': description.valid, 'is-invalid': description.invalid}" required />
+                        <div class="alert alert-danger" *ngIf="description.invalid && (description.dirty || description.touched)">
+                            <div *ngIf="description.errors.required">
+                                Introduzca description por favor
+                            </div>
+                        </div>
+                        <br>
+                        <label for="price"><b>Precio</b></label>
+                        <input type="number" placeholder="Introduzca precio" name="price" #price="ngModel" [(ngModel)]="register.price" class="form-control" [ngClass]="{'is-valid': description.valid, 'is-invalid': description.invalid}" required />
+                        <div class="alert alert-danger" *ngIf="price.invalid && (price.dirty || price.touched)">
+                            <div *ngIf="price.errors.required">
+                                Introduzca precio por favor
+                            </div>
+                        </div>
+                        <br>
+
+                        <label for="size"><b>Talla Producto</b></label>
+                        <div *ngFor="let dataSize of register.size; let i = index" class="form-check form-check-inline">
+                            <label class="form-check-label">{{dataSize | json}}</label>
+                        </div>
+                        <br>
+
+                        <label for="size"><b>Tallas</b></label>
+                        <div *ngFor="let sizePick of sizes; let i = index" class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="{{'Size'+i}}" [value]="sizePick.id" (change)="onChange($event, sizePick.id, 'size')">
+                            <label class="form-check-label" for="{{'Size'+i}}">{{sizePick.name}}({{sizePick.id}})</label>
+                        </div>
+                        <br>
+
+                        <label for="color"><b>Color Producto</b></label>
+                        <div *ngFor="let data of register.color; let i = index" class="form-check form-check-inline">
+                            <label class="form-check-label">{{data | json}}</label>
+                        </div>
+                        <br>
+
+                        <label for="color"><b>Colores</b></label>
+                        <div *ngFor="let data of colors; let i = index" class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="{{'Color'+i}}" [value]="data.id" (change)="onChange($event, data.id, 'color')">
+                            <label class="form-check-label" for="{{'Color'+i}}">{{data.name}}({{data.id}})</label>
+                        </div>
+                        <br>
+
+
+                        <label for="price"><b>Active</b></label>
+                        <div class="form-check form-check-inline">
+                            <input *ngIf="!register.active" class="form-check-input" type="checkbox" id="true" (change)="onActive(true)" [value]="true">
+                            <label class="form-check-label" for="true">Active</label>
+                            <input *ngIf="register.active" class="form-check-input" type="checkbox" id="false" (change)="onActive(false)" value="false">
+                            <label class="form-check-label" for="false">No Active</label>
+                        </div>
+
+
+                        <div class="modal-footer">
+                            <button *ngIf="edit" (click)="updateProduct(form)" [disabled]="form.invalid" type="submit" class="btn btn-secondary" data-dismiss="modal">Modificar<span aria-hidden="true">&nbsp;<i class="far fa-times-circle"></i></span></button>
+                            <button *ngIf="!edit" (click)="addProduct()" [disabled]="form.invalid" type="submit" class="btn btn-secondary" data-dismiss="modal">Añadir<span aria-hidden="true">&nbsp;<i class="far fa-times-circle"></i></span></button>
+                            <button (click)="closeInfoModal()" type="button" class="btn btn-secondary" data-dismiss="modal">Close<span aria-hidden="true">&nbsp;<i class="far fa-times-circle"></i></span></button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

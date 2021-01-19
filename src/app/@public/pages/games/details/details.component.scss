@@ -1,0 +1,30 @@
+@import './../../../../../assets/styles/prices.scss';
+.container {
+    margin-top: 30px;
+}
+
+.mini {
+    margin-bottom: 10px;
+}
+
+// Responsive
+//Cuando es una rsolución pequeña de la pantalla
+@media(max-width: 600px) {
+    #screens-section {
+        display: none;
+    }
+}
+
+// More games - Random Items
+.main-img,
+.more-games {
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    height: 100%;
+    width: 100%
+}
+
+.pointer {
+    cursor: pointer;
+}

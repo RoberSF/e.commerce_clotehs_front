@@ -1,0 +1,37 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@shop/*": ["src/app/@public/*"],
+      "@admin/*": ["src/app/@admin/*"],
+      "@admin-core/*": ["src/app/@admin/core/*"],
+      "@shop-core/*": ["src/app/@public/core/*"],
+      "@graphql/*": ["src/app/@graphql/*"],
+      "@data/*": ["src/assets/@data/*"],
+
+    },
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    
+    "resolveJsonModule": true,
+    "esModuleInterop": true
+    
+  },
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
+  }
+}

@@ -1,0 +1,227 @@
+<mat-vertical-stepper #stepper>
+    <!-- Step 1 -->
+    <mat-step>
+
+
+        <form #f="ngForm" (ngSubmit)="submit()">
+            <ng-template matStepLabel>Que título quieres ponerle?</ng-template>
+            <!-- <mat-form-field>
+                <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+            </mat-form-field> -->
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Título principal del post</label>
+                <input [(ngModel)]="post.title" name="title" #title="ngModel" type="text" [ngClass]="{'is-valid': title.valid, 'is-invalid': title.invalid}" required class="form-control" id="exampleFormControlInput1">
+                <div class="alert alert-danger" *ngIf="title.invalid && (title.dirty || title.touched)">
+                    <div *ngIf="title.errors.required">
+                        Introduzca un nombre por favor
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary" matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+
+    <!-- Step 1.1 -->
+    <mat-step>
+
+
+        <form #f="ngForm" (ngSubmit)="submit()">
+            <ng-template matStepLabel>Autor/Referencias de la entrada</ng-template>
+            <!-- <mat-form-field>
+                <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+            </mat-form-field> -->
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Autor/Referencias</label>
+                <input [(ngModel)]="post.idAuthor" name="idAuthor" #idAuthor="ngModel" type="text" [ngClass]="{'is-valid': title.valid, 'is-invalid': title.invalid}" required class="form-control" id="exampleFormControlInput1">
+                <div class="alert alert-danger" *ngIf="idAuthor.invalid && (idAuthor.dirty || idAuthor.touched)">
+                    <div *ngIf="idAuthor.errors.required">
+                        Introduzca una referencia por favor
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button type="button" class="btn btn-primary" matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+
+    <!-- Step 2 -->
+    <mat-step>
+
+
+        <form #f="ngForm">
+            <ng-template matStepLabel>Añade una breve introducción</ng-template>
+            <!--  Start Editor HTML5 -->
+            <div class="row">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- <textarea [(ngModel)]="post.intro"  name="intro" #intro="ngModel" [ngClass]="{'is-valid': title.valid, 'is-invalid': title.invalid}" id="mymce1"></textarea> -->
+                                <editor [(ngModel)]="post.intro" name="intro" #intro="ngModel" [ngClass]="{'is-valid': title.valid, 'is-invalid': title.invalid}" apiKey="3lpgxyu707f6gybbaj6yu3t6t6x03d9u5pk3qj5zdptcwce" [init]="{plugins: 'link'}" cloudChannel="5" [disabled]="false" id=""
+                                    initialValue="" [inline]="false" plugins="advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table contextmenu directionality emoticons template paste textcolor"
+                                    tagName="div" toolbar="insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons"></editor>
+                            </div>
+                            <div class="alert alert-danger" *ngIf="intro.invalid && (intro.dirty || intro.touched)">
+                                <div *ngIf="intro.errors.required">
+                                    Introduzca el texto por favor
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  End Editor HTML5 -->
+
+
+            <div>
+                <button type="button" class="btn btn-primary" matStepperPrevious>Back</button>
+                <button type="button" class="btn btn-primary" matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+
+
+    <!-- Step 3 -->
+    <mat-step>
+
+        <form #f="ngForm">
+            <ng-template matStepLabel>Categoría</ng-template>
+            <!-- <mat-form-field>
+                <input matInput placeholder="Address" formControlName="secondCtrl" required>
+            </mat-form-field> -->
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Categoría</label>
+                </div>
+                <!-- Podría hacer un ngFor con las categoría que haya en el back  -->
+                <select [(ngModel)]="post.categoria" name="categoria" class="custom-select" id="inputGroupSelect01">
+                  <option selected>Selecciona una categoría</option>
+                  <option *ngFor="let option of categorias">{{option.nombre}}</option>
+                </select>
+            </div>
+
+            <div>
+                <button type="button" class="btn btn-primary" matStepperPrevious>Back</button>
+                <button type="button" class="btn btn-primary" matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+
+
+
+    <!-- Step 4 -->
+    <mat-step>
+        <form #f="ngForm">
+            <ng-template matStepLabel>Escribe el contenido</ng-template>
+            <!--  Start Editor HTML5 -->
+            <div class="row">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- <textarea [(ngModel)]="post.intro"  name="intro" #intro="ngModel" [ngClass]="{'is-valid': title.valid, 'is-invalid': title.invalid}" id="mymce1"></textarea> -->
+                                <editor [(ngModel)]="post.contenido" name="contenido" #contenido="ngModel" [ngClass]="{'is-valid': title.valid, 'is-invalid': title.invalid}" apiKey="y3lpgxyu707f6gybbaj6yu3t6t6x03d9u5pk3qj5zdptcwce" [init]="{
+                                    base_url: '/tinymce',
+                                    suffix: '.min',
+                                    plugins:[ 'link', 'advlist autolink lists link image charmap print preview anchor', 
+                                    'searchreplace visualblocks code fullscreen',
+                                    'insertdatetime media table paste imagetools wordcount'],
+                                    codesample_languajes: [
+                                        {text: 'TypeScript', value: 'typescript'},
+                                        {text: 'JavaScript', value: 'javascript'},
+                                        {text: 'HTML/XML', value: 'markup'},
+                                        {text: 'CSS', value: 'css'}
+                                    ]
+                                        }" cloudChannel="5" [disabled]="false" id="" initialValue="" [inline]="false" plugins="advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table contextmenu directionality emoticons template paste textcolor codesample image imagetools"
+                                    tagName="div" inline="true" toolbar="insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | l      ink image | print preview media fullpage | forecolor backcolor emoticons | image codesample"></editor>
+                            </div>
+                            <div class="alert alert-danger" *ngIf="contenido.invalid && (contenido.dirty || contenido.touched)">
+                                <div *ngIf="contenido.errors.required">
+                                    Introduzca el texto por favor
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--  End Editor HTML5 -->
+
+
+            <div>
+                <button type="button" class="btn btn-primary" matStepperPrevious>Back</button>
+                <button type="button" class="btn btn-primary" matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+
+    <!-- Step 3 -->
+    <mat-step>
+
+        <form #f="ngForm">
+            <ng-template matStepLabel>Imagen</ng-template>
+
+            <!-- Modal -->
+            <div id="modalImg" class="fondo-negro animated fadeIn" *ngIf="this.open">
+                <div class="modal" style="display: block;" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Subir Imagen</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <!-- le estoy asignando al string hiden la palabra oculto, que sería la clase en el css -->
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                            </div>
+                            <div class="modal-body text-center">
+
+
+
+                                <!-- <img *ngIf="!imagenTemp" [src]="'xxx' | imagen: 'xxx'" class="w-150"> -->
+                                <img *ngIf="imagenTemp" [src]="imagenTemp" class="w150">
+
+                                <input (change)="selectImage($event.target.files[0])" type="file">
+
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button (click)="closeSelectImg()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button (click)="saveImg()" type="button" class="btn btn-secondary" data-dismiss="modal">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <button (click)="subirImg()" type="button" class="btn btn-primary" matStepperPrevious>Subir Imagen</button>
+            <hr>
+
+            <div>
+                <button type="button" class="btn btn-primary" matStepperPrevious>Back</button>
+                <button type="button" class="btn btn-primary" matStepperNext>Next</button>
+                <button type="button" class="btn btn-primary" (click)="submit()">Postear</button>
+            </div>
+        </form>
+    </mat-step>
+
+</mat-vertical-stepper>
+
+Editor
+<editor apiKey="y3lpgxyu707f6gybbaj6yu3t6t6x03d9u5pk3qj5zdptcwce" [init]="{
+    height: 500,
+    menubar: false,
+    plugins: [
+      'advlist autolink lists link image charmap print preview anchor',
+      'searchreplace visualblocks code fullscreen',
+      'insertdatetime media table paste code help wordcount'
+    ],
+    toolbar:
+      'undo redo | formatselect | bold italic backcolor | \
+      alignleft aligncenter alignright alignjustify | \
+      bullist numlist outdent indent | removeformat | help'
+  }"></editor>
