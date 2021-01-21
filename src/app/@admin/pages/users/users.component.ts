@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { DocumentNode } from 'graphql';
 import { IResultData } from '../../../@public/core/Interfaces/IResultData';
-import { USERS_LIST_QUERY } from '../../../@graphql/operations/query/user';
+import { SEARCH_USER_QUERY, USERS_LIST_QUERY } from '../../../@graphql/operations/query/user';
 import { ITableColumns } from '../../../@public/core/Interfaces/ITableColumns';
 import { optionsWithDetails, userFormBasicDialog } from 'src/app/@shared/alerts/alerts';
 import { UsersService } from '../../../services/users.service';
@@ -22,8 +22,10 @@ export class UsersComponent implements OnInit {
   itemsPerPage: number;
   resultData: IResultData;
   include: boolean;
-  columns: Array<ITableColumns>
-  filterActiveValue = 'ACTIVE'
+  columns: Array<ITableColumns>;
+  filterActiveValue = 'ACTIVE';
+  reload$ = new EventEmitter<boolean>();
+  searchValue$ = new EventEmitter<any>();
 
   constructor(private userService: UsersService, private titleService: TitleService) { }
 
@@ -33,7 +35,8 @@ export class UsersComponent implements OnInit {
     this.itemsPerPage = 10;
     this.resultData = {
       listKey: 'users',
-      definitionKey: 'users'
+      definitionKey: 'users',
+      searchKey: 'userSearch'
     };
     this.include = true;
     this.columns = [
@@ -264,4 +267,19 @@ private addUser(result) {
     }
   }
 
+  reload() {
+    
+    setTimeout( () => {
+      this.reload$.emit(true);
+    },3000)
+    
+  }
+
+  search(value: string) {
+
+    let searchObject = [ value, SEARCH_USER_QUERY]
+
+    this.searchValue$.emit(searchObject);
+
+  }
 }

@@ -20,4 +20,19 @@ export const PRODUCT_LIST_QUERY = gql`
     ${ PRODUCT_FRAGMENT }
 `;
 
+export const SEARCH_PRODUCT_QUERY = gql`
+  
+  query productSearch($page: Int, $itemsPerPage: Int, $active: ActiveFilterEnum, $value: String ) {
+
+    productSearch(page: $page,itemsPerPage: $itemsPerPage, active:$active, value:$value){
+      status
+      message
+      products {
+        ...ProductObject
+      }
+    }
+  }
+  ${ PRODUCT_FRAGMENT }
+`
+
 

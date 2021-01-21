@@ -14,7 +14,7 @@ export class AdminGuard implements CanActivateChild {
   ): boolean {
     // Primero comprobar que existe sesión
     if (this.auth.getSession() !== null) {
-      console.log('Estamos logueados');
+      // console.log('Estamos logueados');
       const dataDecode = this.decodeToken() as any;
       // Comprobar que no está caducado el token
       if (dataDecode.exp < new Date().getTime() / 1000) {
@@ -23,10 +23,10 @@ export class AdminGuard implements CanActivateChild {
       }
       // El role del usuario es ADMIN
       if (dataDecode.user.role === 'ADMIN') {
-        console.log('Somos administradores');
+        // console.log('Somos administradores');
         return true;
       }
-      console.log('NO somos administradores');
+      // console.log('NO somos administradores');
     }
     return this.redirect();
   }

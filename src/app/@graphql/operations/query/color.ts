@@ -3,10 +3,10 @@ import { RESULT_INFO_FRAGMENT } from '../fragment/result-info';
 import { COLOR_FRAGMENT } from '../fragment/color';
 
 
-export const COLOR_LIST_QUERY = gql`
+export const COLORS_LIST_QUERY = gql`
 
-    query colors($page: Int, $itemsPage: Int, $active:ActiveFilterEnum) {
-      colors(page: $page, itemsPerPage: $itemsPage, active: $active) {
+    query colors($page: Int, $itemsPerPage: Int, $active:ActiveFilterEnum) {
+      colors(page: $page, itemsPerPage: $itemsPerPage, active: $active) {
         info {
           ...ResultInfoObject
         }
@@ -32,6 +32,20 @@ export const COLOR_QUERY = gql`
         }
       }
     }
-    ${ RESULT_INFO_FRAGMENT }
     ${ COLOR_FRAGMENT }
 `;
+
+export const SEARCH_COLOR_QUERY = gql`
+  
+  query colorSearch($page: Int, $itemsPerPage: Int, $active: ActiveFilterEnum, $value: String ) {
+
+    colorSearch(page: $page,itemsPerPage: $itemsPerPage, active:$active, value:$value){
+      status
+      message
+      colors {
+        ...ColorObject
+      }
+    }
+  }
+  ${ COLOR_FRAGMENT }
+`

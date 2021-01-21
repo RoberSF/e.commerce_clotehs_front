@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { ApiService } from '@graphql/services/api.service';
 import { map } from 'rxjs/operators';
-import { ADD_SIZE, MODIFY_SIZE, BLOCK_SIZE, UNBLOCK_SIZE } from '../@graphql/operations/mutation/size';
+import { ADD_SIZE, MODIFY_SIZE, BLOCK_SIZE, UNBLOCK_SIZE, DELETE_SIZE } from '../@graphql/operations/mutation/size';
 import { SIZES_LIST_QUERY } from '../@graphql/operations/query/size';
 
 @Injectable({
@@ -52,6 +52,12 @@ sizes() {
     return this.get(SIZES_LIST_QUERY,{}, {}).pipe(map( (result: any) => {
         return result.sizes;
       }));
+}
+
+delete(id: string) {
+  return this.set(DELETE_SIZE, {id}, {}).pipe(map( (result: any) => {
+    return result.deleteSize;
+  }));
 }
 
 

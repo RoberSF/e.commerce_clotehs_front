@@ -1,15 +1,14 @@
 import gql from 'graphql-tag';
-import { SIZE_FRAGMENT } from '../fragment/size';
 
 
 //**************************************************************************************************
 //                    Método de añadir género de la api graphql                                                           
 //**************************************************************************************************
 
-export const ADD_PRODUCT_SIZE = gql`
+export const ADD_PRODUCT_COLOR = gql`
 
-mutation addProductSize($productSize: ProductSizeInput!) {
-    addProductSize(productSize: $productSize) {
+mutation addProductColor($productColor: ProductColorInput!) {
+    addProductColor(productColor: $productColor) {
       status
       message
       product {
@@ -19,14 +18,12 @@ mutation addProductSize($productSize: ProductSizeInput!) {
   }
   `;
 
-export const DELETE_PRODUCT_SIZE = gql`
+export const DELETE_PRODUCT_COLOR = gql`
 
-mutation deleteProductSize($productId: ID!) {
-    deleteProductSize(productId: $productId) {
+mutation deleteProductColor($productId: ID!) {
+    deleteProductColor(productId: $productId) {
       status
       message
     }
   }
   `;
-
-

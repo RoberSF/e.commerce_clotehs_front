@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { ApiService } from '@graphql/services/api.service';
 import { map } from 'rxjs/operators';
-import { ADD_PRODUCT, MODIFY_PRODUCT, BLOCK_PRODUCT, UNBLOCK_PRODUCT } from '../@graphql/operations/mutation/product';
+import { ADD_PRODUCT, MODIFY_PRODUCT, BLOCK_PRODUCT, UNBLOCK_PRODUCT, DELETE_PRODUCT } from '../@graphql/operations/mutation/product';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 
 
@@ -45,6 +45,12 @@ block(id: string) {
 unBlock(id: string) {
   return this.set(UNBLOCK_PRODUCT,{id}, {}).pipe(map( (result: any) => {
       return result.unBlockProduct;
+    }));
+}
+
+delete(id: string) {
+  return this.set(DELETE_PRODUCT,{id}, {}).pipe(map( (result: any) => {
+      return result.deleteProduct;
     }));
 }
 

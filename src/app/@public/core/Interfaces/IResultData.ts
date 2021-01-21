@@ -14,4 +14,5 @@ export interface IInfoPage {
 export interface IResultData {
     listKey: string;
     definitionKey: string;
+    searchKey?: string
 }

@@ -1,21 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { UsersRoutingModule } from './users-routing.module';
-import { UsersComponent } from './users.component';
+import { ColorsRoutingModule } from './colors-routing.module';
+import { ColorsComponent } from './colors.component';
 import { TablePaginationModule } from '../../../@shared/table-pagination/table-pagination.module';
-import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { SearchBarComponent } from 'src/app/@shared/search-bar/search-bar.component';
 import { SearchBarModule } from '../../../@shared/search-bar/search-bar.module';
 
 
 @NgModule({
-  declarations: [UsersComponent],
+  declarations: [ColorsComponent],
   imports: [
     CommonModule,
-    UsersRoutingModule,
+    ColorsRoutingModule,
     TablePaginationModule,
-    NgbPaginationModule,
     SearchBarModule
   ]
 })
-export class UsersModule { }
+export class ColorsModule { }

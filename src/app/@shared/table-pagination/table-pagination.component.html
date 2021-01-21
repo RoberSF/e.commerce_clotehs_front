@@ -29,6 +29,8 @@
         <thead>
             <tr>
                 <th scope="col" *ngFor="let column of tableColumns">{{column.label}}</th>
+                <th *ngIf="resultData.listKey === 'products'" scope="col">Size</th>
+                <th *ngIf="resultData.listKey === 'products'" scope="col">Color</th>
                 <th scope="col">Gestión</th>
             </tr>
         </thead>
@@ -45,20 +47,31 @@
                         <span *ngIf="data[value.property] != true "><i class="fas fa-times-circle"></i></span>
                     </ng-template>
                 </td>
+
+                <td *ngIf="resultData.listKey === 'products'">
+                    <span *ngFor="let sizes of data.sizeInfo">{{sizes.name}}/</span>
+                </td>
+
+                <td *ngIf="resultData.listKey === 'products'">
+                    <span *ngFor="let colors of data.colorInfo">{{colors.name}}/</span>
+                </td>
+
+
                 <td>
                     <button type="button" class="btn btn-secondary" (click)="manageAction('edit', data)">
-                      <i class="fas fa-edit"></i></button
-                    >&nbsp;
-                    <button type="button" class="btn btn-info"
-                    (click)="manageAction('info', data)">
-                      <i class="fas fa-info"></i></button
-                    >&nbsp;
-                    <button *ngIf="data['active'] == true" type="button" class="btn btn-danger"
-                    (click)="manageAction('block', data)">
+                      <i class="fas fa-edit"></i>
+                    </button>&nbsp;
+                    <button type="button" class="btn btn-info" (click)="manageAction('info', data)">
+                      <i class="fas fa-info"></i>
+                    </button>&nbsp;
+                    <button *ngIf="data['active'] == true" type="button" class="btn btn-danger" (click)="manageAction('block', data)">
                       <i class="fas fa-lock"></i>
-                    </button>
+                    </button>&nbsp;
                     <button *ngIf="data['active'] == false" type="button" class="btn btn-danger" (click)="manageAction('unblock', data)">
                       <i class="fas fa-lock-open"></i>
+                    </button>&nbsp;
+                    <button *ngIf="data['active'] == false" type="button" class="btn btn-danger" (click)="manageAction('delete', data)">
+                        <i class="far fa-trash-alt"></i>
                     </button>
                 </td>
             </tr>

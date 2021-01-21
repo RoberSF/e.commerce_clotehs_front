@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { IResultData } from '@shop/core/Interfaces/IResultData';
 import { ITableColumns } from '@shop/core/Interfaces/ITableColumns';
 import { DocumentNode } from 'graphql';
@@ -7,7 +7,7 @@ import { basicAlert } from 'src/app/@shared/alerts/toasts';
 import { TYPE_ALERT } from 'src/app/@shared/alerts/values.config';
 import { TitleService } from '@admin/core/services/titleService.service';
 import { TagService } from '../../../services/tag.service';
-import { TAGS_LIST_QUERY } from '@graphql/operations/query/tags';
+import { SEARCH_TAG_QUERY, TAGS_LIST_QUERY } from '@graphql/operations/query/tags';
 
 @Component({
   selector: 'app-tags',
@@ -23,6 +23,8 @@ export class TagsComponent implements OnInit {
   include: boolean;
   columns: Array<ITableColumns>
   filterActiveValue = 'ACTIVE';
+  reload$ = new EventEmitter<boolean>();
+  searchValue$ = new EventEmitter<any>();
   
   constructor(private titleService: TitleService, private tagService: TagService) { }
 
@@ -32,7 +34,8 @@ export class TagsComponent implements OnInit {
     this.itemsPerPage = 20;
     this.resultData = {
       listKey: 'tags',
-      definitionKey: 'tags'
+      definitionKey: 'tags',
+      searchKey: 'tagSearch'
     };
     this.include = true
     this.columns = [
@@ -203,6 +206,22 @@ export class TagsComponent implements OnInit {
     } else {
       basicAlert(TYPE_ALERT.WARNING, 'Algo sucedió mal');
     }
+  }
+
+  reload() {
+    
+    setTimeout( () => {
+      this.reload$.emit(true);
+    },3000)
+    
+  }
+
+  search(value: string) {
+
+    let searchObject = [ value, SEARCH_TAG_QUERY]
+
+    this.searchValue$.emit(searchObject);
+
   }
 
 }

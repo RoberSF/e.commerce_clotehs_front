@@ -72,6 +72,20 @@ export const ME_DATA_QUERY = gql`
     ${ USER_FRAGMENT }
 `;
 
+export const SEARCH_USER_QUERY = gql`
+  
+  query userSearch($page: Int, $itemsPerPage: Int, $active: ActiveFilterEnum, $value: String,$include: Boolean! ) {
+
+    userSearch(page: $page,itemsPerPage: $itemsPerPage, active:$active, value:$value){
+      status
+      message
+      users {
+        ...UserObject
+      }
+    }
+  }
+  ${ USER_FRAGMENT }
+`
 
 
 

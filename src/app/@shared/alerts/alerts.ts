@@ -43,6 +43,31 @@ export async function formBasicDialog(
     });
   }
 
+  export async function formColorDialog(
+    title: string,
+    html: string,
+    property: string
+  ) {
+    return await swalWithBasicOptions(title, html).fire({ // Utilizamos el mixin
+      preConfirm: () => {
+        const value = [
+          (document.getElementById('name') as HTMLInputElement).value,
+          (document.getElementById('code') as HTMLInputElement).value,
+          (document.getElementById('active') as HTMLInputElement).value
+        ];
+        if (value) {
+          return value;
+        }
+        Swal.showValidationMessage(
+          'Tienes que añadir un color para poder almacenarlo'
+        );
+        return;
+      },
+    });
+  }
+
+  
+
 
 //**************************************************************************************************
 //                             Formulario para user con validaciones de formulario                                                       

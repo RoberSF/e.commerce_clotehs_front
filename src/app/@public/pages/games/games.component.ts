@@ -69,7 +69,7 @@ export class GamesComponent implements OnInit {
     this.loading = false;
   }
 
-  search(value: string) {
+  search(value: string) {  
 
     // Asiganar array a this. IProduct
     this.productService.getByPlatformSearch(this.selectPage,this.infoPage.itemsPerPage, ACTIVE_FILTERS.ACTIVE, this.gamesPageInfo.platformsIds, value).subscribe((data) => {

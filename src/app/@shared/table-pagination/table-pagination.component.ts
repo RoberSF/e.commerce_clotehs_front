@@ -28,6 +28,8 @@ export class TablePaginationComponent implements OnInit {
 @Input() tableColumns: Array<ITableColumns> = undefined;
 // ACTIVE, INACTIVE, ALL
 @Input() filterActiveValue = 'ACTIVE' // Por defecto va a ser ACTIVE y por html-ngModel le asigno el valor que yo quiera
+@Input() reload: Observable<any>;
+@Input() searchValue:  Observable<any>;
 
 //**************************************************************************************************
 //                                     Salida de data                                                           
@@ -42,14 +44,49 @@ export class TablePaginationComponent implements OnInit {
 infoPage: IInfoPage;
 data$: Observable<any>;
 loading:boolean;
+dataLocal;
 
 
 
 
 
-  constructor(private paginationService: TablePaginationService) { }
+constructor(private paginationService: TablePaginationService) { }
 
-  ngOnInit(): void {
+ngOnInit(): void {
+
+  this.reload.subscribe( (res:any) => {
+    if( res === true ) {
+      this.loadData()
+    }
+  })
+
+  this.searchValue.subscribe ( (res:any) => {
+
+    this.loading = true;
+    loadData('Cargando búsqueda', 'Casi estamos');
+
+    const variables = {
+      page: this.infoPage.page,
+      itemsPerPage: this.itemsPerPage,
+      include: this.include,
+      active: this.filterActiveValue,
+      value: res[0]
+    }
+
+    this.data$ = this.paginationService.getCollectionData(res[1], variables, {}).pipe(map(
+      (result:any) => {
+        const data = result[this.resultData.searchKey];
+        // this.infoPage.pages = data.info.pages === undefined ? '' : data.info.pages;
+        // this.infoPage.total = data.info.total === undefined ? '' : data.info.total;
+        this.loading = false;
+        closeAlert();
+        return data[this.resultData.listKey];
+      })
+    )
+  })
+
+  
+
     if(this.query === undefined){
       throw new Error('Query is undifinied, please add one')
     }
@@ -82,6 +119,7 @@ loading:boolean;
       include: this.include,
       active: this.filterActiveValue
     }
+
     this.data$ = this.paginationService.getCollectionData(this.query, variables, {}).pipe(map(
       (result:any) => {
         const data = result[this.resultData.definitionKey];
@@ -100,11 +138,13 @@ loading:boolean;
 
 
   //**************************************************************************************************
-  //     Metodo para manejar las acciones de los botones edit,info & block                                                           
+  //     Metodo para manejar las acciones de los botones edit,info & block   
+  //      La data es enviada desde el evento click que recoge el *ngFor del template                                                        
   //**************************************************************************************************
   
+
   manageAction(action: string, data: any) {
-    console.log(action, data);
+    // console.log(action, data);
     this.manageItem.emit([action, data]);
   }
 

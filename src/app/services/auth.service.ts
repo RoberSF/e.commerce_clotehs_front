@@ -62,13 +62,13 @@ start() {
       }
       this.updateSession(result);
     })
-    console.log('Session Iniciada');
+    // console.log('Session Iniciada');
     return
   }
   this.updateSession({
     status:false
   });
-  console.log('Sesion no iniciada');
+  // console.log('Sesion no iniciada');
 };
 
 // Método de utilización de las funciones de graphql que consume la Api

@@ -1,41 +1,44 @@
-import { Component, OnInit } from '@angular/core';
-import { GENRE_LIST_QUERY } from '@graphql/operations/query/genre';
+import { TitleService } from '@admin/core/services/titleService.service';
+import { Component, EventEmitter, OnInit } from '@angular/core';
+import { SEARCH_SIZE_QUERY, SIZES_LIST_QUERY } from '@graphql/operations/query/size';
+import { IResultData } from '@shop/core/Interfaces/IResultData';
 import { ITableColumns } from '@shop/core/Interfaces/ITableColumns';
 import { DocumentNode } from 'graphql';
 import { formBasicDialog, optionsWithDetails } from 'src/app/@shared/alerts/alerts';
+import { basicAlert } from 'src/app/@shared/alerts/toasts';
 import { TYPE_ALERT } from 'src/app/@shared/alerts/values.config';
-import { GenresService } from 'src/app/services/genres.service';
-import { IResultData } from '../../../@public/core/Interfaces/IResultData';
-import { basicAlert } from '../../../@shared/alerts/toasts';
-import { TitleService } from '@admin/core/services/titleService.service';
+import { SizeService } from 'src/app/services/size.service';
 
 @Component({
-  selector: 'app-genres',
-  templateUrl: './genres.component.html',
-  styleUrls: ['./genres.component.scss']
+  selector: 'app-sizes',
+  templateUrl: './sizes.component.html',
+  styleUrls: ['./sizes.component.scss']
 })
-export class GenresComponent implements OnInit  {
+export class SizesComponent implements OnInit {
 
-
-  query: DocumentNode = GENRE_LIST_QUERY;
+  query: DocumentNode = SIZES_LIST_QUERY
   context: object;
   itemsPerPage: number;
   resultData: IResultData;
   include: boolean;
   columns: Array<ITableColumns>
   filterActiveValue = 'ACTIVE';
+  reload$ = new EventEmitter<boolean>();
+  searchValue$ = new EventEmitter<any>();
+  
+  constructor(private titleService: TitleService, public sizeService: SizeService) { }
 
-  constructor(private genreService: GenresService, private titleService: TitleService) { }
+  ngOnInit() {
 
-  ngOnInit(): void {
-    this.titleService.updateTitle('Géneros')
+    this.titleService.updateTitle('Tallas')
     this.context = {};
-    this.itemsPerPage = 10;
+    this.itemsPerPage = 20;
     this.resultData = {
-      listKey: 'genres',
-      definitionKey: 'genres'
+      listKey: 'sizes',
+      definitionKey: 'sizes',
+      searchKey: 'sizeSearch'
     };
-    this.include = false
+    this.include = true
     this.columns = [
       {
         property: 'id',
@@ -56,20 +59,14 @@ export class GenresComponent implements OnInit  {
     ]
   }
 
-
-  //**************************************************************************************************
-  //         Contiene las acción genérica que tiene que desarrollarse al hacer click en alguno de
-  //           los botones implementados en el table-pagination                                                 
-  //**************************************************************************************************
-    
   async buttonsEdit($event) {
 
     // Coger la información para las acciones por separado
     const action = $event[0];
-    const genre = $event[1];
+    const size = $event[1];
 
     // Cogemos el valor por defecto
-    const defaultValue = genre.name !== undefined && genre.name !== '' ? genre.name : '';
+    const defaultValue = size.name !== undefined && size.name !== '' ? size.name : '';
     const html = `<input id="name" value="${defaultValue}" class="swal2-input" required>`;
 
     switch (action) {
@@ -78,48 +75,51 @@ export class GenresComponent implements OnInit  {
         this.addForm(html);
         break;
       case 'edit':
-        this.updateForm(html, genre);
+        this.updateForm(html, size);
         break;
       case 'info':
         const result = await optionsWithDetails(
           'Detalles',
-          `${genre.name} (${genre.slug})`,
+          `${size.name} (${size.slug})`,
           375,
           '<i class="fas fa-edit"></i> Editar', // true
           '<i class="fas fa-lock"></i> Bloquear'
         ); // false
         if (result) {
-          this.updateForm(html, genre);
+          this.updateForm(html, size);
         } else if (result === false) {
-          this.blockForm(genre);
+          this.blockForm(size);
         }
         break;
       case 'block':
-        this.blockForm(genre);
+        this.blockForm(size);
         break;
         case 'unblock':
-          this.unBlockForm(genre);
+          this.unBlockForm(size);
+          break;
+        case 'delete':
+          this.deleteForm(size);
           break;
       default:
         break;
     }
   }
 
-
 //**************************************************************************************************
-//                        Métodos para añadir un género                                                           
+//                        Métodos para añadir un size                                                           
 //**************************************************************************************************
-                
+ 
   private async addForm(html: string) {
-    const result = await formBasicDialog('Añadir género', html, 'name');
-    this.addGenre(result);
+    const result = await formBasicDialog('Añadir talla', html, 'name');
+    this.addSize(result);
   }
 
-  private addGenre(result) {
+  private addSize(result) {
     if (result.value) {
-      this.genreService.add(result.value).subscribe((res: any) => {
+      this.sizeService.add(result.value).subscribe((res: any) => {
         if (res.status) {
           basicAlert(TYPE_ALERT.SUCCESS, res.message);
+          this.reload()
           return;
         }
           basicAlert(TYPE_ALERT.WARNING, res.message);
@@ -128,20 +128,21 @@ export class GenresComponent implements OnInit  {
   }
 
   //**************************************************************************************************
-  //                    Métodos para actualizar género                                                           
+  //                    Métodos para actualizar size                                                           
   //**************************************************************************************************
   
-  private async updateForm(html: string, genre: any) {
-    const result = await formBasicDialog('Modificar género', html, 'name');
-    this.updateGenre(genre.id, result);
+  private async updateForm(html: string, size: any) {
+    const result = await formBasicDialog('Modificar talla', html, 'name');
+    this.updateSize(size.id, result);
   }
 
-  private updateGenre(id: string, result) {
+  private updateSize(id: string, result) {
     if (result.value) {
-      this.genreService.update(id, result.value).subscribe((res: any) => {
+      this.sizeService.update(id, result.value).subscribe((res: any) => {
         console.log(res);
         if (res.status) {
           basicAlert(TYPE_ALERT.SUCCESS, res.message);
+          this.reload();
           return;
         }
         basicAlert(TYPE_ALERT.WARNING, res.message);
@@ -149,15 +150,17 @@ export class GenresComponent implements OnInit  {
     }
   }
 
-  //**************************************************************************************************
-  //              Método para bloquear un género                                                           
+    //**************************************************************************************************
+  //              Método para bloquear un size                                                           
   //**************************************************************************************************
   
 
-  private blockGenre(id: string) {
-    this.genreService.block(id).subscribe((res: any) => {
+  private blockSize(id: string) {
+    this.sizeService.block(id).subscribe((res: any) => {
       if (res.status) {
         basicAlert(TYPE_ALERT.SUCCESS, res.message);
+        this.reload()
+        this.reload();
         return;
       }
       basicAlert(TYPE_ALERT.WARNING, res.message);
@@ -165,20 +168,21 @@ export class GenresComponent implements OnInit  {
   }
 
   //**************************************************************************************************
-  //              Método para desbloquear un género                                                           
+  //              Método para desbloquear un size                                                           
   //**************************************************************************************************
 
-  private unBlockGenre(id: string) {
-    this.genreService.unBlock(id).subscribe((res: any) => {
+  private unBlockSize(id: string) {
+    this.sizeService.unBlock(id).subscribe((res: any) => {
       if (res.status) {
         basicAlert(TYPE_ALERT.SUCCESS, res.message);
+        this.reload()
         return;
       }
         basicAlert(TYPE_ALERT.WARNING, res.message);
     });
   }
 
-  private async blockForm(genre: any) {
+  private async blockForm(size: any) {
     const result = await optionsWithDetails(
       '¿Bloquear?',
       `Si bloqueas el item seleccionado, no se mostrará en la lista`,
@@ -188,11 +192,11 @@ export class GenresComponent implements OnInit  {
     );
     if (result === false) {
       // Si resultado falso, queremos bloquear
-      this.blockGenre(genre.id);
+      this.blockSize(size.id);
     }
   }
 
-  private async unBlockForm(genre: any) {
+  private async unBlockForm(size: any) {
 
 
     const result =
@@ -206,16 +210,59 @@ export class GenresComponent implements OnInit  {
       ) 
 
     if(result == false) {
-      this.unBlockGenre(genre.id);
+      this.unBlockSize(size.id);
     } else {
       basicAlert(TYPE_ALERT.WARNING, 'Algo sucedió mal');
     }
   }
 
+  reload() {
+    
+    setTimeout( () => {
+      this.reload$.emit(true);
+    },3000)
+    
+  }
+
+  private async deleteForm(size: any) {
 
 
+    const result =
 
+      await optionsWithDetails(
+        'Borrar?',
+        `Si borras el item seleccionado se eliminará de la base de datos`,
+        500,
+        'No, no borrar',
+        'Si, borrar'
+      ) 
 
+    if(result == false) {
+      this.deleteSize(size.id);
+      this.reload();
+    } else {
+      basicAlert(TYPE_ALERT.WARNING, 'Algo sucedió mal');
+    }
+  }
 
+  deleteSize(id: string) {
+
+    this.sizeService.delete(id).subscribe((res: any) => {
+      if (res.status) {
+        basicAlert(TYPE_ALERT.SUCCESS, res.message);
+        this.reload()
+        return;
+      }
+        basicAlert(TYPE_ALERT.WARNING, res.message);
+    });
+  }
+
+  search(value: string) {
+
+    let searchObject = [ value, SEARCH_SIZE_QUERY]
+
+    this.searchValue$.emit(searchObject);
+
+  }
 
 }

@@ -24,7 +24,7 @@ mutation addSize($size: SizeInput!) {
 
 export const MODIFY_SIZE = gql`
 
-mutation updateSize($id: ID!, $size: SizeInput!) {
+mutation updateSize($id: ID!, $size: String!) {
     updateSize(id: $id, size: $size) {
     status
     message
@@ -49,6 +49,15 @@ mutation blockSize($id: ID!) {
 export const UNBLOCK_SIZE = gql`
 mutation unBlockSize($id: ID!) {
     unBlockSize(id: $id) {
+      status
+      message
+    }
+  }
+  `;
+
+export const DELETE_SIZE = gql`
+mutation deleteSize($id: ID!) {
+  deleteSize(id: $id) {
       status
       message
     }

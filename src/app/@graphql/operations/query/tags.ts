@@ -19,3 +19,18 @@ export const TAGS_LIST_QUERY = gql`
     ${ RESULT_INFO_FRAGMENT }
     ${ TAG_FRAGMENT }
 `;
+
+export const SEARCH_TAG_QUERY = gql`
+  
+  query tagSearch($page: Int, $itemsPerPage: Int, $active: ActiveFilterEnum, $value: String ) {
+
+    tagSearch(page: $page,itemsPerPage: $itemsPerPage, active:$active, value:$value){
+      status
+      message
+      tags {
+        ...TagObject
+      }
+    }
+  }
+  ${ TAG_FRAGMENT }
+`

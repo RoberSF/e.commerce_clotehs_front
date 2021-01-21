@@ -19,8 +19,31 @@
         "icon": "fas fa-atlas"
     },
     {
-        "url": "/admin/post-edit",
+        "url": "/admin/colors",
+        "label": "Colores",
+        "icon": "fas fa-atlas"
+    },
+
+    {
+        "url": "/admin/sizes",
+        "label": "Tallas",
+        "icon": "fas fa-atlas"
+    },
+    {
+        "url": "/admin/posts",
         "label": "Posts",
+        "icon": "fas fa-atlas",
+
+        "submenu": {
+            "url": "/admin/post-edit",
+            "label": "Posts - Edit",
+            "icon": "fas fa-atlas"
+        }
+    },
+    {
+        "url": "/admin/post-edit",
+        "label": "Posts - Edit",
         "icon": "fas fa-atlas"
     }
+
 ]

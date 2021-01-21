@@ -1,20 +1,23 @@
 import { TitleService } from '@admin/core/services/titleService.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { IResultData } from '@shop/core/Interfaces/IResultData';
 import { ITableColumns } from '@shop/core/Interfaces/ITableColumns';
 import { DocumentNode } from 'graphql';
 import { ProductsService } from 'src/app/services/products.service';
-import { formBasicDialog, optionsWithDetails, formProductDialog, userFormBasicDialog } from 'src/app/@shared/alerts/alerts';
+import { optionsWithDetails } from 'src/app/@shared/alerts/alerts';
 import { basicAlert } from 'src/app/@shared/alerts/toasts';
 import { TYPE_ALERT } from '../../../@shared/alerts/values.config';
-import { PRODUCT_LIST_QUERY } from '@graphql/operations/query/product';
+import { PRODUCT_LIST_QUERY, SEARCH_PRODUCT_QUERY } from '@graphql/operations/query/product';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 import { NgForm } from '@angular/forms';
 import { SizeService } from '../../../services/size.service';
-import { ColorService } from '../../../services/stripe/color.service';
-import productList from '@data/products.json';
 import { ProductSizeService } from '../../../services/product_size.service';
 import { IProductSize } from '../../core/interfaces/IProductSize';
+import { IProductColor } from '@admin/core/interfaces/IProductColor';
+import { ColorService } from 'src/app/services/color.service';
+import { ProductColorService } from '../../../services/product_color.service';
+import { Observable } from 'rxjs/internal/Observable';
+import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-products',
@@ -34,7 +37,9 @@ export class ProductsComponent implements OnInit {
   edit = false;
   sizes;
   colors;
-  product
+  product;
+  reload$ = new EventEmitter<boolean>();
+  searchValue$ = new EventEmitter<any>();
  
   register: IProduct = {
     name: '',
@@ -50,7 +55,7 @@ export class ProductsComponent implements OnInit {
   };
 
   constructor(private productsService: ProductsService, private titleService: TitleService, private sizeService: SizeService, public colorService: ColorService,
-              public productSizeService: ProductSizeService) { }
+              public productSizeService: ProductSizeService, public productColorService: ProductColorService) { }
 
   ngOnInit(): void {
 
@@ -66,7 +71,8 @@ export class ProductsComponent implements OnInit {
     this.itemsPerPage = 10;
     this.resultData = {
       listKey: 'products',
-      definitionKey: 'products'
+      definitionKey: 'products',
+      searchKey: 'productSearch'
     };
     this.include = false
     this.columns = [
@@ -87,20 +93,20 @@ export class ProductsComponent implements OnInit {
         label: 'Stock'
       },
       {
-        property: 'sizeInfo',
-        label: 'Size'
-      },
-      {
-        property: 'colorInfo',
-        label: 'Color'
-      },
-      {
         property: 'active',
         label: '¿Activo?'
       },
     ]
   }
 
+
+  reload() {
+    
+    setTimeout( () => {
+      this.reload$.emit(true);
+    },3000)
+    
+  }
 
   async buttonsEdit($event) {
 
@@ -137,6 +143,9 @@ export class ProductsComponent implements OnInit {
         case 'unblock':
           this.unBlockForm(product);
           break;
+        case 'delete':
+          this.deleteForm(product);
+          break;
       default:
         break;
     }
@@ -150,14 +159,15 @@ export class ProductsComponent implements OnInit {
         if (res.status) {
           this.modal = false
           basicAlert(TYPE_ALERT.SUCCESS, res.message);
-          this.addProductSize(res.product.size)
+          this.addProductSize(res.product.size);
+          this.addProductColor(res.product.size);
+          this.reload();
           return;
         }
           basicAlert(TYPE_ALERT.WARNING, res.message);
       });
     
   }
-
 
   public updateProduct(result: NgForm) {
 
@@ -168,7 +178,8 @@ export class ProductsComponent implements OnInit {
         if (res.status) {
           console.log(res);
           basicAlert(TYPE_ALERT.SUCCESS, res.message);
-          this.closeInfoModal()
+          this.closeInfoModal();
+          this.reload()
           return;
         } 
 
@@ -178,27 +189,10 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-
-  private blockProduct(id: string) {
-    this.productsService.block(id).subscribe((res: any) => {
-      if (res.status) {
-        basicAlert(TYPE_ALERT.SUCCESS, res.message);
-        return;
-      }
-      basicAlert(TYPE_ALERT.WARNING, res.message);
-    });
-  }
-
-  private unBlockProduct(id: string) {
-    this.productsService.unBlock(id).subscribe((res: any) => {
-      if (res.status) {
-        basicAlert(TYPE_ALERT.SUCCESS, res.message);
-        return;
-      }
-        basicAlert(TYPE_ALERT.WARNING, res.message);
-    });
-  }
-
+  //**************************************************************************************************
+  //                                     Bloquear - desbloquear                                                           
+  //**************************************************************************************************
+  
   private async blockForm(product: any) {
     const result = await optionsWithDetails(
       '¿Bloquear?',
@@ -211,6 +205,79 @@ export class ProductsComponent implements OnInit {
       // Si resultado falso, queremos bloquear
       this.blockProduct(product.id);
     }
+  }
+
+  private async blockProduct(id: string) {
+
+    this.productsService.block(id).subscribe( async (res: any) => {
+      if (res.status) {
+        basicAlert(TYPE_ALERT.SUCCESS, res.message);
+        this.reload()
+        return;
+      }
+      basicAlert(TYPE_ALERT.WARNING, res.message);
+    });
+  }
+
+  private unBlockProduct(id: string) {
+    this.productsService.unBlock(id).subscribe((res: any) => {
+      if (res.status) {
+        basicAlert(TYPE_ALERT.SUCCESS, res.message);
+        this.reload()
+        return;
+      }
+        basicAlert(TYPE_ALERT.WARNING, res.message);
+    });
+  }
+
+//**************************************************************************************************
+//                        Borrar product - product_size - product_color                                                           
+//**************************************************************************************************
+
+
+  private async deleteForm(product: any) {
+
+
+    const result =
+
+      await optionsWithDetails(
+        'Borrar?',
+        `Si borras el item seleccionado se eliminará de la base de datos`,
+        500,
+        'No, no borrar',
+        'Si, borrar'
+      ) 
+
+    if(result == false) {
+      this.deleteProduct(product.id);
+      this.deleteProductColor(product.id);
+      this.deleteProductSize(product.id);
+      this.reload();
+    } else {
+      basicAlert(TYPE_ALERT.WARNING, 'Algo sucedió mal');
+    }
+  }
+
+  deleteProduct(id: string) {
+
+    this.productsService.delete(id).subscribe((res: any) => {
+      if (res.status) {
+        this.modal = false
+        basicAlert(TYPE_ALERT.SUCCESS, res.message);
+        return;
+      }
+        basicAlert(TYPE_ALERT.WARNING, res.message);
+    });
+  }
+
+  deleteProductSize(productId: string) {
+
+      this.productSizeService.delete(productId).subscribe()
+  }
+
+  deleteProductColor(productId: string) {
+
+      this.productColorService.delete(productId).subscribe()
   }
 
   private async unBlockForm(product: any) {
@@ -228,10 +295,16 @@ export class ProductsComponent implements OnInit {
 
     if(result == false) {
       this.unBlockProduct(product.id);
+      this.reload()
     } else {
       basicAlert(TYPE_ALERT.WARNING, 'Algo sucedió mal');
     }
   }
+
+  //**************************************************************************************************
+  //                    Open - close modal                                                           
+  //**************************************************************************************************
+  
 
   openModal(product) {
 
@@ -348,6 +421,29 @@ export class ProductsComponent implements OnInit {
       this.productSizeService.add(product_size).subscribe()
     })
   }
+
+  addProductColor(productColor) {
+
+    productColor.map( (item) => {
+      const product_color: IProductColor = {
+        productId: productColor.product.id,
+        colorId: item,
+        active: true
+      }
+
+      this.productColorService.add(product_color).subscribe()
+    })
+  }
+
+  search(value: string) {
+
+    let searchObject = [ value, SEARCH_PRODUCT_QUERY]
+
+    this.searchValue$.emit(searchObject);
+
+  }
+
+
 
 
 }

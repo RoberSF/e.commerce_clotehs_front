@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
 import { ApiService } from '@graphql/services/api.service';
 import { map } from 'rxjs/operators';
-import { MODIFY_COLOR, BLOCK_COLOR, UNBLOCK_COLOR, ADD_COLOR } from '../../@graphql/operations/mutation/color';
-import { COLOR_LIST_QUERY } from '@graphql/operations/query/color';
+import { COLORS_LIST_QUERY } from '@graphql/operations/query/color';
+import { ADD_COLOR, DELETE_COLOR, MODIFY_COLOR, UNBLOCK_COLOR } from '@graphql/operations/mutation/color';
+import { BLOCK_COLOR } from '../@graphql/operations/mutation/color';
+import { IColor } from '@admin/core/interfaces/IColor';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +17,13 @@ export class ColorService extends ApiService {
 }
 
 
-add(color: string) {
+add(color: IColor) {
   return this.set(ADD_COLOR,{color}, {}).pipe(map( (result: any) => {
       return result.addColor;
     }));
 }
 
-update(id: string, color: string) {
+update(id: string, color: IColor) {
   return this.set(
     MODIFY_COLOR,
     {
@@ -49,10 +51,15 @@ unBlock(id: string) {
 }
 
 colors() {
-    return this.get(COLOR_LIST_QUERY,{}, {}).pipe(map( (result: any) => {
+    return this.get(COLORS_LIST_QUERY,{}, {}).pipe(map( (result: any) => {
         return result.colors;
       }));
 }
 
+delete(id: string) {
+  return this.set(DELETE_COLOR, {id}, {}).pipe(map( (result: any) => {
+    return result.deleteColor;
+  }));
+}
 
 }

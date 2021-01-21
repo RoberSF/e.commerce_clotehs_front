@@ -22,7 +22,7 @@ mutation addSize($color: ColorInput!) {
 
 export const MODIFY_COLOR = gql`
 
-mutation updateSize($id: ID!, $color: ColorInput!) {
+mutation updateColor($id: ID!, $color: ColorInput!) {
     updateColor(id: $id, color: $color) {
     status
     message
@@ -47,6 +47,15 @@ mutation blockColor($id: ID!) {
 export const UNBLOCK_COLOR = gql`
 mutation unBlockColor($id: ID!) {
     unBlockColor(id: $id) {
+      status
+      message
+    }
+  }
+  `;
+
+export const DELETE_COLOR = gql`
+mutation deleteColor($id: ID!) {
+  deleteColor(id: $id) {
       status
       message
     }

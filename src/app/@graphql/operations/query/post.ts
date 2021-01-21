@@ -1,5 +1,4 @@
 import gql from 'graphql-tag';
-import { GENRE_FRAGMENT } from '../fragment/genre';
 import { RESULT_INFO_FRAGMENT } from '../fragment/result-info';
 
 export const POST_LIST_QUERY = gql`
@@ -11,13 +10,15 @@ export const POST_LIST_QUERY = gql`
         }
         status
         message
-        post {
-        id
-        title
-        intro
-        contenido
-        categoria
-        img
+        posts {
+          id
+          title
+          intro
+          contenido
+          categoria
+          img
+          date
+          active
       }
       }
     }
@@ -42,3 +43,20 @@ export const POST_QUERY = gql`
     }
     ${ RESULT_INFO_FRAGMENT }
 `;
+
+export const SEARCH_POST_QUERY = gql`
+  
+  query postSearch($page: Int, $itemsPerPage: Int, $active: ActiveFilterEnum, $value: String ) {
+
+    postSearch(page: $page,itemsPerPage: $itemsPerPage, active:$active, value:$value){
+      status
+      message
+      posts {
+        id
+        title
+        categoria
+        active
+      }
+    }
+  }
+`

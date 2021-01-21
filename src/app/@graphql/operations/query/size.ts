@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
 import { RESULT_INFO_FRAGMENT } from '../fragment/result-info';
-import { TAG_FRAGMENT } from '../fragment/tag';
 import { SIZE_FRAGMENT } from '../fragment/size';
 
 export const SIZES_LIST_QUERY = gql`
@@ -35,3 +34,18 @@ export const SIZE_QUERY = gql`
     ${ RESULT_INFO_FRAGMENT }
     ${ SIZE_FRAGMENT }
 `;
+
+export const SEARCH_SIZE_QUERY = gql`
+  
+  query sizeSearch($page: Int, $itemsPerPage: Int, $active: ActiveFilterEnum, $value: String ) {
+
+    sizeSearch(page: $page,itemsPerPage: $itemsPerPage, active:$active, value:$value){
+      status
+      message
+      sizes {
+        ...SizeObject
+      }
+    }
+  }
+  ${ SIZE_FRAGMENT }
+`

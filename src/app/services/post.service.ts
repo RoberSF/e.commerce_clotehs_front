@@ -25,7 +25,7 @@ export class PostService extends ApiService {
     };
 
 
-   deletePost(id:string) {
+   delete(id:string) {
 
     return this.set(DELETE_POST,{id}, {}).pipe(map( (result: any) => {
         return result.addPost;
