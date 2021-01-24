@@ -4,8 +4,9 @@ import { CommonModule } from '@angular/common';
 import { ColorsRoutingModule } from './colors-routing.module';
 import { ColorsComponent } from './colors.component';
 import { TablePaginationModule } from '../../../@shared/table-pagination/table-pagination.module';
-import { SearchBarComponent } from 'src/app/@shared/search-bar/search-bar.component';
 import { SearchBarModule } from '../../../@shared/search-bar/search-bar.module';
+import { FormsModule } from '@angular/forms';
+
 
 
 @NgModule({
@@ -14,7 +15,9 @@ import { SearchBarModule } from '../../../@shared/search-bar/search-bar.module';
     CommonModule,
     ColorsRoutingModule,
     TablePaginationModule,
-    SearchBarModule
+    SearchBarModule,
+    FormsModule,
+
   ]
 })
 export class ColorsModule { }

@@ -61,3 +61,11 @@ mutation deleteColor($id: ID!) {
     }
   }
   `;
+
+export const SINGLE_UPLOAD = gql`
+  mutation($file: Upload!) {
+      singleUpload(file: $file) {
+            id
+      }
+        }
+`;

@@ -2,6 +2,41 @@
     <app-search-bar (searchValue)="search($event)"></app-search-bar>
 </div>
 
-<app-table-pagination (manageItem)="buttonsEdit($event)" [searchValue]="searchValue$" [reload]="reload$" [filterActiveValue]="filterActiveValue" [query]="query" [context]="context" [itemsPerPage]="itemsPerPage" [include]="include" [resultData]="resultData"
+<!-- <div class="col-lg-5">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">User Photo</h4>
+
+            <img *ngIf="imagenTemp" [src]="imagenTemp" class="w150">
+
+            <input #fileInput (change)="selectImage1($event)" type="file">
+
+            <br><br>
+
+            <button (click)="changeImage()" [disabled]="!uploadFile" type="button" class="btn btn-block btn-success waves-effect waves-light m-r-10">
+                <i class="fa fa-save"></i>
+                Up to Date
+              </button>
+        </div>
+    </div>
+</div> -->
+
+<div class="center">
+    <h1>Manage Files</h1>
+</div>
+<h2>Add Photo</h2>
+<form #photoForm='ngForm' (ngSubmit)='save(photoForm)'>
+    <div>
+        <input type="file" id="file" (change)="handleFileInput($event.target.files)" #photoUpload>
+        <button mat-raised-button (click)='clickUpload()' type='button'>
+            Upload Photo
+        </button> {{photoData?.file?.name}}
+    </div>
+    <br>
+    <br>
+    <button mat-raised-button type='submit'>Save</button>
+</form>
+
+<!-- <app-table-pagination (manageItem)="buttonsEdit($event)" [searchValue]="searchValue$" [reload]="reload$" [filterActiveValue]="filterActiveValue" [query]="query" [context]="context" [itemsPerPage]="itemsPerPage" [include]="include" [resultData]="resultData"
     [tableColumns]="columns">
-</app-table-pagination>
+</app-table-pagination> -->

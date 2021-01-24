@@ -4,7 +4,7 @@ import { ApiService } from '@graphql/services/api.service';
 import { map } from 'rxjs/operators';
 import { COLORS_LIST_QUERY } from '@graphql/operations/query/color';
 import { ADD_COLOR, DELETE_COLOR, MODIFY_COLOR, UNBLOCK_COLOR } from '@graphql/operations/mutation/color';
-import { BLOCK_COLOR } from '../@graphql/operations/mutation/color';
+import { BLOCK_COLOR, SINGLE_UPLOAD } from '../@graphql/operations/mutation/color';
 import { IColor } from '@admin/core/interfaces/IColor';
 
 @Injectable({
@@ -60,6 +60,11 @@ delete(id: string) {
   return this.set(DELETE_COLOR, {id}, {}).pipe(map( (result: any) => {
     return result.deleteColor;
   }));
+}
+
+upload(file) {
+  console.log(file);
+  return this.set(SINGLE_UPLOAD, {file}, { useMultiPart: true})
 }
 
 }

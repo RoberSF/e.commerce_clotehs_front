@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { LOGIN_QUERY, USERS_LIST_QUERY, ME_DATA_QUERY } from '@graphql/operations/query/user';
 import {map} from 'rxjs/operators'
 import { DocumentNode } from 'graphql';
-import { IRegisterForm } from '@shop/core/Interfaces/IRegister';
-import { REGISTER_USER } from '@graphql/operations/mutation/user';
+
 @Injectable({
   providedIn: 'root'
 })

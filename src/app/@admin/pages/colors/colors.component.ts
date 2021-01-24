@@ -1,5 +1,6 @@
 import { TitleService } from '@admin/core/services/titleService.service';
-import { Component, EventEmitter, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { COLORS_LIST_QUERY, SEARCH_COLOR_QUERY } from '@graphql/operations/query/color';
 import { IResultData } from '@shop/core/Interfaces/IResultData';
 import { ITableColumns } from '@shop/core/Interfaces/ITableColumns';
@@ -9,6 +10,9 @@ import { basicAlert } from 'src/app/@shared/alerts/toasts';
 import { TYPE_ALERT } from 'src/app/@shared/alerts/values.config';
 import { ColorService } from 'src/app/services/color.service';
 import { IColor } from '../../core/interfaces/IColor';
+import { ApiService } from '../../../@graphql/services/api.service';
+import { NgForm } from '@angular/forms';
+
 
 @Component({
   selector: 'app-colors',
@@ -27,8 +31,12 @@ export class ColorsComponent implements OnInit {
   filterActiveValue = 'ACTIVE';
   reload$ = new EventEmitter<boolean>();
   searchValue$ = new EventEmitter<any>();
+  uploadFile: File;
+  imagenTemp: any;
+  photoData: any = <any>{};
+  @ViewChild('photoUpload', {static: false}) photoUpload: any;
   
-  constructor(private titleService: TitleService, public colorService: ColorService) { }
+  constructor(private titleService: TitleService, public colorService: ColorService, public http: HttpClient, public apiService: ApiService) { }
 
   ngOnInit() {
 
@@ -286,5 +294,104 @@ export class ColorsComponent implements OnInit {
     this.searchValue$.emit(searchObject);
 
   }
+
+  selectImage(file: File) {
+
+    console.log(file);
+
+    if( !file ) {
+      this.uploadFile = null;
+      return;
+    }
+
+    if ( file.type.indexOf('image') <0 ) {
+      basicAlert(TYPE_ALERT.WARNING, 'Inténtalo de nuevo')
+    }
+
+    this.uploadFile = file;
+
+
+    let reader = new FileReader(); //esto es javascript puro
+    let urlImagenTemp =  reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      this.imagenTemp = reader.result;
+      console.log(this.imagenTemp);
+    }
+
+  }
+  
+  changeImage() {
+
+    // podría disparar la subida desde aquí pero mejor hacerla desde el servicio por que allí tengo el id
+
+    alert('Llamamos al graphql')
+  }
+
+  // Opción JingShao Chen. No recoge el context la api
+  selectImage1($event) {
+
+    var operations = {
+
+      query: `
+        mutation($file: Upload!) {
+          singleUpload(file: $file) {
+            id
+          }
+        }
+      `,
+      variables: {
+        file: null
+      },
+      context: {
+        useMultipart: true
+      }
+  }
+
+  var _map = { 
+    file: ["variables.file"]
+  }
+
+  var file = $event.target.files[0]
+  var fd = new FormData()
+    fd.append('operations', JSON.stringify(operations))
+    fd.append('map', JSON.stringify(_map))
+    fd.append('file', file, file.name)
+
+
+  this.http.post('http://localhost:2002/graphql', fd, {
+    reportProgress: true,
+    observe: 'events'
+  }).subscribe()
+}
+
+// Opción normal(no-works). No recoge file. Error: createReadStream is not a function
+selectImage2($event) {
+  var file = $event.target.files[0]
+  this.colorService.upload(file).subscribe()
+
+}
+
+// Opción levelup. Parecido a selectImage2
+clickUpload() {
+  this.photoUpload.nativeElement.click();
+}
+
+handleFileInput(files) {
+  console.log(files);
+  this.photoData.file = files[0];
+}
+
+save(uploadForm: NgForm) {
+
+  if (uploadForm.invalid || !this.photoData.file) {
+    return;
+  }
+  const { file } = this.photoData;
+
+  this.colorService.upload(file).subscribe()
+}
+
+
 
 }
