@@ -9,6 +9,7 @@ export const COLOR_FRAGMENT = gql`
     slug
     active
     code
+    img
   }
 
 `;

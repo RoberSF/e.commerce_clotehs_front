@@ -12,6 +12,9 @@ import { ColorService } from 'src/app/services/color.service';
 import { IColor } from '../../core/interfaces/IColor';
 import { ApiService } from '../../../@graphql/services/api.service';
 import { NgForm } from '@angular/forms';
+import { fileURLToPath } from 'url';
+import { type } from 'os';
+import { ModalUploadService } from '../../../@shared/modal-upload/modal-upload.service';
 
 
 @Component({
@@ -35,8 +38,12 @@ export class ColorsComponent implements OnInit {
   imagenTemp: any;
   photoData: any = <any>{};
   @ViewChild('photoUpload', {static: false}) photoUpload: any;
+  EmiterImgTemp = new EventEmitter<any>();
+  colorId: string
+  modalUpload = false;
   
-  constructor(private titleService: TitleService, public colorService: ColorService, public http: HttpClient, public apiService: ApiService) { }
+  constructor(private titleService: TitleService, public colorService: ColorService, public http: HttpClient, public apiService: ApiService,
+                public modalUploadService: ModalUploadService) { }
 
   ngOnInit() {
 
@@ -65,6 +72,10 @@ export class ColorsComponent implements OnInit {
       {
         property: 'code',
         label: 'Code'
+      },
+      {
+        property: 'img',
+        label: 'Imagen'
       },
       {
         property: 'active',
@@ -120,6 +131,10 @@ export class ColorsComponent implements OnInit {
           break;
       case 'delete':
         this.deleteForm(color);
+          break;
+      case 'file':
+        this.modalUpload = true
+        this.colorId = color.id
           break;
       default:
         break;
@@ -295,9 +310,8 @@ export class ColorsComponent implements OnInit {
 
   }
 
+  // Método de subida por petición put que si guarda en storage
   selectImage(file: File) {
-
-    console.log(file);
 
     if( !file ) {
       this.uploadFile = null;
@@ -316,17 +330,30 @@ export class ColorsComponent implements OnInit {
 
     reader.onloadend = () => {
       this.imagenTemp = reader.result;
-      console.log(this.imagenTemp);
+      this.EmiterImgTemp.emit(this.imagenTemp)
+
+      // this.http.put('http://localhost:2002/upload',  this.uploadFile, {
+      //   reportProgress: true,
+      //   observe: 'events'
+      // }).subscribe()
+
     }
 
   }
+
+
+upload() {
+
+  this.modalUploadService.uploadFile(this.uploadFile, this.resultData.listKey, this.colorId) .then(resp => {
+    this.modalUpload = false;
+    this.imagenTemp = '';
+    this.reload()
+  })
+  .catch(resp => {
+    console.log('Error en la carga')
+  })
+}
   
-  changeImage() {
-
-    // podría disparar la subida desde aquí pero mejor hacerla desde el servicio por que allí tengo el id
-
-    alert('Llamamos al graphql')
-  }
 
   // Opción JingShao Chen. No recoge el context la api
   selectImage1($event) {
@@ -373,13 +400,8 @@ selectImage2($event) {
 }
 
 // Opción levelup. Parecido a selectImage2
-clickUpload() {
-  this.photoUpload.nativeElement.click();
-}
-
 handleFileInput(files) {
-  console.log(files);
-  this.photoData.file = files[0];
+  this.photoData.file = files;
 }
 
 save(uploadForm: NgForm) {
@@ -390,6 +412,10 @@ save(uploadForm: NgForm) {
   const { file } = this.photoData;
 
   this.colorService.upload(file).subscribe()
+}
+
+closeModal(){
+  this.modalUpload = false
 }
 
 

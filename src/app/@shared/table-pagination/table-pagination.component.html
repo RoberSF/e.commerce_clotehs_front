@@ -41,11 +41,16 @@
                     <!-- Configuración para substituir true/false por icon.
                      Span para poder hacer hacer ngIf dentro del ngFor.
                      ngIf hacemos la validación ng-template(no vale otra etiqueta) la unimos al else del ngIf -->
-                    <span *ngIf="value.property != 'active'; else filterActiveValue">{{data[value.property] }}</span>
-                    <ng-template #filterActiveValue>
+                    <span *ngIf="value.property != 'active' && value.property != 'img'; else filterActiveImgValue">{{data[value.property] }}</span>
+                    <ng-template #filterActiveImgValue>
                         <span *ngIf="data[value.property] == true "><i class="fas fa-check-circle"></i></span>
-                        <span *ngIf="data[value.property] != true "><i class="fas fa-times-circle"></i></span>
+                        <span *ngIf="data[value.property] == false "><i class="fas fa-times-circle"></i></span>
+
+                        <span *ngIf="data[value.property] && value.property === 'img'"><i class="far fa-images"><a href={{data[value.property]}} target="_blanck">Ver</a>&nbsp;&nbsp;</i></span>
+                        <span *ngIf="!data[value.property] && value.property === 'img'"><i class="fas fa-times-circle"></i></span>
                     </ng-template>
+
+
                 </td>
 
                 <td *ngIf="resultData.listKey === 'products'">
@@ -63,6 +68,9 @@
                     </button>&nbsp;
                     <button type="button" class="btn btn-info" (click)="manageAction('info', data)">
                       <i class="fas fa-info"></i>
+                    </button>&nbsp;
+                    <button type="button" class="btn btn-info" (click)="manageAction('file', data)">
+                    <i class="far fa-file-image"></i>
                     </button>&nbsp;
                     <button *ngIf="data['active'] == true" type="button" class="btn btn-danger" (click)="manageAction('block', data)">
                       <i class="fas fa-lock"></i>

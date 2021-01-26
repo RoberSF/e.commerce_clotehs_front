@@ -62,10 +62,18 @@ mutation deleteColor($id: ID!) {
   }
   `;
 
+// Config Api normal que devuelve un tipo File
+// export const SINGLE_UPLOAD = gql`
+//   mutation($file: Upload) {
+//       singleUpload(file: $file) {
+//         id
+//       }
+//         }
+// `;
+
+// Config que devuelve un Boolean
 export const SINGLE_UPLOAD = gql`
-  mutation($file: Upload!) {
-      singleUpload(file: $file) {
-            id
-      }
+  mutation($file: Upload) {
+      singleUpload(file: $file)
         }
 `;
