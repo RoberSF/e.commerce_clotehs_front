@@ -3,29 +3,19 @@ import { PRODUCT_FRAGMENT } from '../fragment/product';
 
 export const HOME_PAGE = gql`
 
-  query HomePageInfo($showPlatform: Boolean = false, $similarAndScreen: Boolean = false) {
+query HomePageInfo {
 
-    carousel: productsOffersLast(itemsPerPage: 6, topPrice: 30, random: true) {
-        products {
-        ...ProductObject
-      }
-    }
-    pc: productsPlatformsRandom(itemsPerPage: 4, platform: ["4"], random: true) {
-        products {
-        ...ProductObject
-      }
-    }
-    ps4: productsPlatformsRandom(itemsPerPage: 4, platform: ["18"], random: true) {
-        products {
-        ...ProductObject
-      }
-    }
-    topPrice35: productsOffersLast(itemsPerPage: 4, topPrice: 35, random: true) {
-        products {
-        ...ProductObject
-      }
-    }
+carousel: productsOffersLast(itemsPerPage: 6, topPrice: 28) {
+    products {
+    ...ProductObject
   }
+}
+topPrice35: productsOffersLast(itemsPerPage: 4, topPrice: 28, random: true) {
+    products {
+    ...ProductObject
+  }
+}
+}
   ${PRODUCT_FRAGMENT}
 `;
 
