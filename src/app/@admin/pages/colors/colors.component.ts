@@ -132,10 +132,6 @@ export class ColorsComponent implements OnInit {
       case 'delete':
         this.deleteForm(color);
           break;
-      case 'file':
-        this.modalUpload = true
-        this.colorId = color.id
-          break;
       default:
         break;
     }
@@ -399,11 +395,6 @@ selectImage2($event) {
 
 }
 
-// Opción levelup. Parecido a selectImage2
-handleFileInput(files) {
-  this.photoData.file = files;
-}
-
 save(uploadForm: NgForm) {
 
   if (uploadForm.invalid || !this.photoData.file) {
@@ -414,9 +405,6 @@ save(uploadForm: NgForm) {
   this.colorService.upload(file).subscribe()
 }
 
-closeModal(){
-  this.modalUpload = false
-}
 
 
 
