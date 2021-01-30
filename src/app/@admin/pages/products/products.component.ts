@@ -51,7 +51,7 @@ export class ProductsComponent implements OnInit {
     stock: 0.0,
     size: [],
     color: [],
-    photo: ''
+    img: ''
   };
 
   constructor(private productsService: ProductsService, private titleService: TitleService, private sizeService: SizeService, public colorService: ColorService,
@@ -91,6 +91,10 @@ export class ProductsComponent implements OnInit {
       {
         property: 'stock',
         label: 'Stock'
+      },
+      {
+        property: 'img',
+        label: 'Imagen'
       },
       {
         property: 'active',

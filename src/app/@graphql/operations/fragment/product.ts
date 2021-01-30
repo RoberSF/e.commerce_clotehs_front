@@ -19,7 +19,7 @@ fragment ProductObject on ProductItem {
           colorInfo {
             name
           }
-          photo
+          img
           price
           # rating
           screenshoots

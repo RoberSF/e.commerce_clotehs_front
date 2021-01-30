@@ -20,7 +20,7 @@ mutation addProduct($product: ProductInput!) {
           description
           size
           color
-          photo
+          img
           price
           active
           stock
@@ -41,7 +41,7 @@ mutation updateProduct($id: ID!, $product: ProductInput!) {
           description
           size
           color
-          photo
+          img
           price
           active
           stock
