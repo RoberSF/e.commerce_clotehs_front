@@ -19,7 +19,4 @@ topPrice35: productsOffersLast(itemsPerPage: 4, topPrice: 28, random: true) {
   ${PRODUCT_FRAGMENT}
 `;
 
-
-// productsPlatformsRandom(page: $page, itemsPerPage: $itemsPage, active: $active, platform: $platform, random: $random )
-
 // productsOffersLast(page: $page, itemsPerPage: $itemsPage, active: $active, random: $random, topPrice: $topPrice, lastUnits: $lastUnits)

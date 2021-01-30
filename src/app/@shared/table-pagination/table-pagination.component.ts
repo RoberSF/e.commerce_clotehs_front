@@ -7,6 +7,9 @@ import { Observable } from 'rxjs/internal/Observable';
 import { map } from 'rxjs/internal/operators/map';
 import { ITableColumns } from '@shop/core/Interfaces/ITableColumns';
 import { closeAlert, loadData } from 'src/app/@shared/alerts/alerts';
+import { ModalUploadService } from '../modal-upload/modal-upload.service';
+import { basicAlert } from '../alerts/toasts';
+import { TYPE_ALERT } from '../alerts/values.config';
 
 @Component({
   selector: 'app-table-pagination',
@@ -45,13 +48,18 @@ infoPage: IInfoPage;
 data$: Observable<any>;
 loading:boolean;
 dataLocal;
-imgUrl;
+uploadFile: File;
+imagenTemp: any;
+EmiterImgTemp = new EventEmitter<any>();
+itemId: string;
+modalUpload = false;
+cloudyCollection = '';
 
 
 
 
 
-constructor(private paginationService: TablePaginationService) { }
+constructor(private paginationService: TablePaginationService, public modalUploadService: ModalUploadService) { }
 
 ngOnInit(): void {
 
@@ -103,6 +111,9 @@ ngOnInit(): void {
       itemsPerPage: this.itemsPerPage,
       total: 1
     }
+    
+    this.cloudyCollection = this.resultData.listKey
+    console.log(this.cloudyCollection);
     this.loadData();
   }
 
@@ -149,9 +160,67 @@ ngOnInit(): void {
     this.manageItem.emit([action, data]);
   }
 
-  navigation(info) {
-    console.log(info);
-    this.imgUrl = info
+    // Método de subida por petición put que si guarda en storage
+    selectImage(file: File) {
+
+      if( !file ) {
+        this.uploadFile = null;
+        return;
+      }
+  
+      if ( file.type.indexOf('image') <0 ) {
+        basicAlert(TYPE_ALERT.WARNING, 'Inténtalo de nuevo')
+      }
+  
+      this.uploadFile = file;
+  
+  
+      let reader = new FileReader(); //esto es javascript puro
+      let urlImagenTemp =  reader.readAsDataURL(file);
+  
+      reader.onloadend = () => {
+        this.imagenTemp = reader.result;
+        this.EmiterImgTemp.emit(this.imagenTemp)
+  
+        // this.http.put('http://localhost:2002/upload',  this.uploadFile, {
+        //   reportProgress: true,
+        //   observe: 'events'
+        // }).subscribe()
+  
+      }
+  
+    }
+  
+  
+  upload() {
+
+    console.log(this.cloudyCollection);
+  
+    this.modalUploadService.uploadFile(this.uploadFile, this.cloudyCollection, this.itemId) .then(resp => {
+      this.modalUpload = false;
+      this.imagenTemp = '';
+      this.loadData()
+    })
+    .catch(resp => {
+      console.log('Error en la carga')
+    })
+  }
+
+  closeModal() {
+    this.modalUpload = false
+  }
+
+  openModal(data, collection) {
+
+    console.log(collection);
+    if(collection === 'screenshoots') {
+      this.cloudyCollection = 'screenshoots',
+      console.log(this.cloudyCollection);
+    }
+
+    this.itemId = data.id;
+    this.modalUpload = true;
+    
   }
 
 }

@@ -113,8 +113,7 @@ private setInObject(productObject, showDescription) {
 private manageInfo(listProducts, showDescription = true) {
         const resultList: Array<IProduct> = [];
         listProducts.map( (productObject) => {
-          // resultList.push( this.setInObject(productObject, showDescription)
-          // )
+          // resultList.push( this.setInObject(productObject, showDescription)) // Daría error por la nueva IProduct que he definido
         })
         return resultList;
 }
