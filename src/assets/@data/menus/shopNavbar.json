@@ -4,29 +4,43 @@
         "icon": ""
     },
     {
-        "url": "/games/platforms/sony",
-        "label": "Juegos PlayStation",
-        "icon": ""
-    },
-
-    {
-        "url": "/games/platforms/microsoft",
-        "label": "Juegos Microsoft",
+        "url": "/products/products/niños",
+        "label": "Niños",
         "icon": ""
     },
     {
-        "url": "/games/platforms/nintendo",
-        "label": "Juegos Nintendo",
+        "url": "/products/products/casualVerano",
+        "label": "Casual Verano",
         "icon": ""
     },
     {
-        "url": "games/promotions/last-units",
-        "label": "Últimas unidades",
+        "url": "/products/products/casualInvierno",
+        "label": "Casual Invierno",
         "icon": ""
     },
     {
-        "url": "/games/promotions/offers",
-        "label": "Liquidación",
+        "url": "/products/products/deBlanco",
+        "label": "De blanco",
+        "icon": ""
+    },
+    {
+        "url": "/products/products/trabajo",
+        "label": "Trabajo",
+        "icon": ""
+    },
+    {
+        "url": "/products/products/sport",
+        "label": "Sport",
+        "icon": ""
+    },
+    {
+        "url": "/products/products/headwear",
+        "label": "HeadWear",
+        "icon": ""
+    },
+    {
+        "url": "/products/products/accesorios",
+        "label": "Accesorios",
         "icon": ""
     },
     {
