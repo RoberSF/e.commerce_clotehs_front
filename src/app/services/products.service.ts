@@ -5,6 +5,8 @@ import { map } from 'rxjs/operators';
 import { ADD_PRODUCT, MODIFY_PRODUCT, BLOCK_PRODUCT, UNBLOCK_PRODUCT, DELETE_PRODUCT } from '../@graphql/operations/mutation/product';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 import { HOME_PAGE } from '@graphql/operations/query/homePage';
+import { ACTIVE_FILTERS } from '../@shared/constants/filter';
+import { SEARCH_PRODUCTO_PLATFORM } from '@graphql/operations/query/search';
 
 
 @Injectable({
@@ -85,6 +87,17 @@ private setInObject(productObject) {
   };
 }
 
+
+getByPlatformSearch(page: number = 1, itemsPage: number = 10, active: ACTIVE_FILTERS = ACTIVE_FILTERS.ACTIVE, platform: Array<string>, searchValue: string) {
+  return this.get(SEARCH_PRODUCTO_PLATFORM, { page, itemsPage, active, platform, searchValue }).pipe(map((result: any) => {
+    const data = result.productsPlatformsSearch
+    return {
+      info: data.info,
+      result: this.manageInfo(data.products)
+    }
+
+  }));
+}
 
 
 
