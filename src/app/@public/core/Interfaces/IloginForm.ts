@@ -1,7 +1,7 @@
 import { IUser } from './IUser';
 import { IMenuUser } from './IMenuUser';
 export interface ILogin {
-    email: String,
+    email: string,
     password: any
 }
 
