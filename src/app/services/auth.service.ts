@@ -25,7 +25,6 @@ export class AuthService extends ApiService {
   
   accessVar = new Subject<IMeData>();
   accessVar$ = this.accessVar.asObservable();
-  modal = true
 
   constructor(apollo:Apollo) { 
     super(apollo);
