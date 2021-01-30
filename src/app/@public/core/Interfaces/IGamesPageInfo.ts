@@ -1,7 +1,6 @@
-export interface IGamePageInfo {
+export interface IProductPageInfo {
     title: string;
     description: string;
-    platformsIds: Array<string>;
+    categorias: Array<string>;
     topPrice: number;
-    stock: number;
 }
