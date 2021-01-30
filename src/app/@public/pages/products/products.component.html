@@ -1,0 +1,22 @@
+<div class="container-fluid">
+    <app-search-bar (searchValue)="search($event)"></app-search-bar>
+</div>
+
+<button *ngIf="searchOpen" (click)="clean()" class="btn btn-success float-right mr-3 mb-2"> Limpiar búsqueda </button>
+
+<div class="container-fluid" *ngIf="!loading && infoPage">
+
+
+    <app-product-categori-list [title]="productsPageInfo.title" [productList]="productList" [description]="productsPageInfo.description" [showDesc]=true></app-product-categori-list>
+
+    <div *ngIf="!searchOpen" class="d-flex justify-content-between p-2">
+        <ngb-pagination [collectionSize]="infoPage.total" [(page)]="selectPage" (pageChange)="loadData()" [pageSize]="infoPage.itemsPerPage" [maxSize]="15">
+        </ngb-pagination>
+        <select class="custom-select" style="width: auto;" [(ngModel)]="infoPage.itemsPerPage" (ngModelChange)="loadData()">
+            <option [ngValue]="5">5 items per page</option>
+            <option [ngValue]="10">10 items per page</option>
+            <option [ngValue]="15">15 items per page</option>
+            <option [ngValue]="20">20 items per page</option>
+            </select>
+    </div>
+</div>
