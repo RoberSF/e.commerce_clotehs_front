@@ -16,8 +16,9 @@ import { IProductSize } from '../../core/interfaces/IProductSize';
 import { IProductColor } from '@admin/core/interfaces/IProductColor';
 import { ColorService } from 'src/app/services/color.service';
 import { ProductColorService } from '../../../services/product_color.service';
-import { Observable } from 'rxjs/internal/Observable';
-import { ThrowStmt } from '@angular/compiler';
+import { CATEGORIAS } from '../../../@shared/constants/products.constants'
+import { ICategorias } from '../../../@public/core/Interfaces/ICategorias';
+
 
 @Component({
   selector: 'app-products',
@@ -40,6 +41,7 @@ export class ProductsComponent implements OnInit {
   product;
   reload$ = new EventEmitter<boolean>();
   searchValue$ = new EventEmitter<any>();
+  categorias: Array<ICategorias> = CATEGORIAS;
  
   register: IProduct = {
     name: '',
@@ -158,18 +160,18 @@ export class ProductsComponent implements OnInit {
 
   public addProduct() {
 
-
-      this.productsService.add(this.register).subscribe((res: any) => {
-        if (res.status) {
-          this.modal = false
-          basicAlert(TYPE_ALERT.SUCCESS, res.message);
-          this.addProductSize(res.product.size);
-          this.addProductColor(res.product.size);
-          this.reload();
-          return;
-        }
-          basicAlert(TYPE_ALERT.WARNING, res.message);
-      });
+      console.log(this.register);
+      // this.productsService.add(this.register).subscribe((res: any) => {
+      //   if (res.status) {
+      //     this.modal = false
+      //     basicAlert(TYPE_ALERT.SUCCESS, res.message);
+      //     this.addProductSize(res.product.size);
+      //     this.addProductColor(res.product.size);
+      //     this.reload();
+      //     return;
+      //   }
+      //     basicAlert(TYPE_ALERT.WARNING, res.message);
+      // });
     
   }
 
@@ -446,7 +448,6 @@ export class ProductsComponent implements OnInit {
     this.searchValue$.emit(searchObject);
 
   }
-
 
 
 

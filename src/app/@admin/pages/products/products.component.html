@@ -24,11 +24,22 @@
                             </div>
                         </div>
 
-                        <label for="categoria"><b>Categoria</b></label>
+                        <!-- <label for="categoria"><b>Categoria</b></label>
                         <input type="text" placeholder="Introduzca una categoria" name="categoria" #categoria="ngModel" [(ngModel)]="register.categoria" class="form-control" [ngClass]="{'is-valid': categoria.valid, 'is-invalid': categoria.invalid}" required />
                         <div class="alert alert-danger" *ngIf="categoria.invalid && (categoria.dirty || categoria.touched)">
                             <div *ngIf="categoria.errors.required">
                                 Introduzca una categoria
+                            </div>
+                        </div> -->
+
+                        <label class="mr-sm-2" for="categoria"><b>Categoria</b></label>
+                        <select [(ngModel)]="register.categoria" #categoria="ngModel" name="categoria" class="custom-select mr-sm-2" [ngClass]="{'is-valid': categoria.valid, 'is-invalid': categoria.invalid}" required>
+                            <option class="h5" selected>Categorías:</option>
+                            <option *ngFor="let categoria of categorias" [value]="categoria.value">{{categoria.name}}</option>
+                        </select>
+                        <div class="alert alert-danger" *ngIf="categoria.invalid && (categoria.dirty || categoria.touched)">
+                            <div *ngIf="categoria.errors.required">
+                                Selecciones una categoria
                             </div>
                         </div>
 
