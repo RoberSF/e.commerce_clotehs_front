@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
-import productList from '@data/products.json';
 import { Router } from '@angular/router';
 import { ShoppingCartService } from '../../services/shopping-cart.service';
+import { CategoriListService } from './product-categori-list.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-categori-list',
@@ -16,7 +17,8 @@ export class ProductCategoriListComponent implements OnInit {
   @Input() description = '';
   @Input() showDesc: boolean;
 
-  constructor(private router: Router, private shoppinCartService: ShoppingCartService) { }
+
+  constructor(private router: Router, private shoppinCartService: ShoppingCartService, private categoiListService: CategoriListService) { }
 
   ngOnInit(): void {
   }
