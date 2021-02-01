@@ -7,6 +7,8 @@ import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 import { HOME_PAGE } from '@graphql/operations/query/homePage';
 import { ACTIVE_FILTERS } from '../@shared/constants/filter';
 import { SEARCH_PRODUCTO_PLATFORM } from '@graphql/operations/query/search';
+import { PRODUCT_BY_CATEGORIA } from '@graphql/operations/query/product';
+import { DocumentNode } from 'graphql';
 
 
 @Injectable({
@@ -88,9 +90,9 @@ private setInObject(productObject) {
 }
 
 
-getByPlatformSearch(page: number = 1, itemsPage: number = 10, active: ACTIVE_FILTERS = ACTIVE_FILTERS.ACTIVE, platform: Array<string>, searchValue: string) {
-  return this.get(SEARCH_PRODUCTO_PLATFORM, { page, itemsPage, active, platform, searchValue }).pipe(map((result: any) => {
-    const data = result.productsPlatformsSearch
+getByCategoria(page: number = 1, itemsPage: number = 10, active: ACTIVE_FILTERS = ACTIVE_FILTERS.ACTIVE, categorias: Array<string>) {
+  return this.get(PRODUCT_BY_CATEGORIA, { page, itemsPage, active, categorias }).pipe(map((result: any) => {
+    const data = result.productsCategorias
     return {
       info: data.info,
       result: this.manageInfo(data.products)
@@ -98,6 +100,12 @@ getByPlatformSearch(page: number = 1, itemsPage: number = 10, active: ACTIVE_FIL
 
   }));
 }
+
+searchProductsByCategorias(query: DocumentNode, variables: object = {} , context: object = {}) {
+  return this.get(query,variables,context)
+}
+
+
 
 
 
