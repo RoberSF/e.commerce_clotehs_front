@@ -22,9 +22,9 @@ export const PRODUCT_LIST_QUERY = gql`
 
 export const SEARCH_PRODUCT_QUERY = gql`
   
-  query productSearch($page: Int, $itemsPerPage: Int, $active: ActiveFilterEnum, $value: String ) {
+  query productSearch($page: Int, $itemsPerPage: Int, $active: ActiveFilterEnum, $value: String, $categoriasId: [ID] ) {
 
-    productSearch(page: $page,itemsPerPage: $itemsPerPage, active:$active, value:$value){
+    productSearch(page: $page,itemsPerPage: $itemsPerPage, active:$active, value:$value, categoriasId: $categoriasId){
       status
       message
       products {
@@ -34,5 +34,18 @@ export const SEARCH_PRODUCT_QUERY = gql`
   }
   ${ PRODUCT_FRAGMENT }
 `
-
+export const PRODUCT_BY_CATEGORIA = gql`
+  query productsCategorias($categorias: [ID]) {
+      productsCategorias(categorias: $categorias) {
+        info {
+          ...ResultInfoObject
+        }
+        products {
+        ...ProductObject
+      }
+        }
+      }
+    ${ RESULT_INFO_FRAGMENT }
+    ${ PRODUCT_FRAGMENT }
+`
 
