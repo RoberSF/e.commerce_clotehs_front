@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, Pipe, PipeTransform } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { DocumentNode } from 'graphql';
 import { TablePaginationService } from './table-pagination.service';
 import { USERS_LIST_QUERY } from '../../@graphql/operations/query/user';
@@ -69,6 +69,7 @@ ngOnInit(): void {
     }
   })
 
+  // 3 Recibe el dato de búsqueda con el array con la info y hace la búsqueda 
   this.searchValue.subscribe ( (res:any) => {
 
     this.loading = true;
@@ -79,7 +80,8 @@ ngOnInit(): void {
       itemsPerPage: this.itemsPerPage,
       include: this.include,
       active: this.filterActiveValue,
-      value: res[0]
+      value: res[0],
+      categoriasId: res[2] || []
     }
 
     this.data$ = this.paginationService.getCollectionData(res[1], variables, {}).pipe(map(
@@ -113,7 +115,6 @@ ngOnInit(): void {
     }
     
     this.cloudyCollection = this.resultData.listKey
-    console.log(this.cloudyCollection);
     this.loadData();
   }
 
@@ -161,7 +162,7 @@ ngOnInit(): void {
   }
 
     // Método de subida por petición put que si guarda en storage
-    selectImage(file: File) {
+  selectImage(file: File) {
 
       if( !file ) {
         this.uploadFile = null;
@@ -189,13 +190,11 @@ ngOnInit(): void {
   
       }
   
-    }
+  }
   
   
   upload() {
 
-    console.log(this.cloudyCollection);
-  
     this.modalUploadService.uploadFile(this.uploadFile, this.cloudyCollection, this.itemId) .then(resp => {
       this.modalUpload = false;
       this.imagenTemp = '';
@@ -212,7 +211,6 @@ ngOnInit(): void {
 
   openModal(data, collection) {
 
-    console.log(collection);
     if(collection === 'screenshoots') {
       this.cloudyCollection = 'screenshoots',
       console.log(this.cloudyCollection);
