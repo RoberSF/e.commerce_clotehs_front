@@ -1,13 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
-import { IProductPageInfo } from '@shop/core/Interfaces/IGamesPageInfo';
+import { IProductPageInfo } from '@shop/core/Interfaces/IProductPageInfo';
 import { IInfoPage } from '@shop/core/Interfaces/IResultData';
 import { closeAlert, loadData } from 'src/app/@shared/alerts/alerts';
 import { ACTIVE_FILTERS } from 'src/app/@shared/constants/filter';
 import { PRODUCTS_PAGES_INFO, TYPE_OPERATION } from 'src/app/@shared/constants/products.constants';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductsService } from 'src/app/services/products.service';
+import { SEARCH_PRODUCT_QUERY } from '@graphql/operations/query/product';
+import { CategoriListService } from '../../../@shared/product-categori-list/product-categori-list.service';
+import { TablePaginationService } from 'src/app/@shared/table-pagination/table-pagination.service';
 
 @Component({
   selector: 'app-products',
@@ -28,9 +31,10 @@ export class ProductsComponent implements OnInit {
   productsPageInfo: IProductPageInfo;
   typeData: TYPE_OPERATION;
   loading: boolean;
-  searchOpen = false
+  searchOpen = false;
   
-  constructor(private productsService: ProductsService, private activatedRoute: ActivatedRoute,private auth: AuthService) { }
+  constructor(private productsService: ProductsService, private activatedRoute: ActivatedRoute,private auth: AuthService, private categoriListService: CategoriListService,
+    private paginationService: TablePaginationService) { }
 
   ngOnInit() {
 
@@ -48,15 +52,10 @@ export class ProductsComponent implements OnInit {
 
   loadData() {
     if( this.typeData === TYPE_OPERATION.PRODUCTS) {
-      // this.productService.getByPlatform(this.selectPage,this.infoPage.itemsPerPage, ACTIVE_FILTERS.ACTIVE, this.gamesPageInfo.platformsIds ,false, true, true).subscribe((data) => {
-      //   this.asingResult(data)
-      //   return
-      // })
+      this.productsService.getByCategoria(this.selectPage, this.infoPage.itemsPerPage, ACTIVE_FILTERS.ACTIVE, this.productsPageInfo.categoriasId).subscribe( (data) => {
+        this.asingResult(data)
+      })
     }
-    // this.productService.getByLastUnitsOffers(this.selectPage,this.infoPage.itemsPerPage, ACTIVE_FILTERS.ACTIVE, false, this.gamesPageInfo.topPrice, this.gamesPageInfo.stock, true, true).subscribe((data) => {
-    //   this.asingResult(data)
-    //   return
-    // })
   };
 
   private asingResult(data) {
@@ -66,14 +65,27 @@ export class ProductsComponent implements OnInit {
     this.loading = false;
   }
 
+
+  // 2 Recibe el dato del component de searchBar y se lo mando al table-pagintation
   search(value: string) {  
 
-    // Asiganar array a this. IProduct
-    this.productsService.getByPlatformSearch(this.selectPage,this.infoPage.itemsPerPage, ACTIVE_FILTERS.ACTIVE, this.productsPageInfo.categorias, value).subscribe((data) => {
-      this.searchOpen = true;
-      this.productList = data.result
-      return
+    this.loading = true;
+    loadData('Cargando búsqueda', 'Casi estamos');
+
+    const variables = {
+      page: this.infoPage.page,
+      itemsPerPage: this.infoPage.itemsPerPage,
+      include: false,
+      active: ACTIVE_FILTERS.ACTIVE,
+      value: value,
+      categoriasId: this.productsPageInfo.categoriasId
+    }
+
+    this.productsService.searchProductsByCategorias(SEARCH_PRODUCT_QUERY, variables, {}).subscribe( (data:any) => {
+      this.productList = data.productSearch.products;
+      closeAlert();
     })
+
 
   };
 
