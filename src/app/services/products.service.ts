@@ -7,7 +7,7 @@ import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 import { HOME_PAGE } from '@graphql/operations/query/homePage';
 import { ACTIVE_FILTERS } from '../@shared/constants/filter';
 import { SEARCH_PRODUCTO_PLATFORM } from '@graphql/operations/query/search';
-import { PRODUCT_BY_CATEGORIA } from '@graphql/operations/query/product';
+import { PRODUCT_BY_CATEGORIA, PRODUCT_DETAILS } from '@graphql/operations/query/product';
 import { DocumentNode } from 'graphql';
 
 
@@ -85,7 +85,8 @@ private setInObject(productObject) {
     description: productObject.description,
     qty: 1,
     price: productObject.price,
-    active: productObject.active
+    active: productObject.active,
+    stock: productObject.stock
   };
 }
 
@@ -105,7 +106,24 @@ searchProductsByCategorias(query: DocumentNode, variables: object = {} , context
   return this.get(query,variables,context)
 }
 
+stockUpdateListener(id: number) {
+  // return this.subscription(SUBSCRIPTIONS_PRODUCT_SELECT_STOCK, { id }).pipe(map( (result: any) => {
+  //   return result.selectProductStockUpdate
+  // }));
+}
 
+
+getItem(id: number) {
+
+  return this.get( PRODUCT_DETAILS, { id: id}, {}, false).pipe(map( (result: any) => {
+    const data =  result.productDetails;
+    return {
+      product: this.setInObject(data.product),
+      screenshoots: data.product.screenshoots, //ojo al doble product que es a causa del fragment
+    } 
+  }))
+
+}
 
 
 
