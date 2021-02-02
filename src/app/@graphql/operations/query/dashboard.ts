@@ -10,6 +10,7 @@ export const COLLECTION_TOTALS = gql`
         tags: totalElements(collection: "tags")
         tallas: totalElements(collection: "tallas")
         users:totalElements(collection: "users")
+        categorias: totalElements(collection: "categorias")
           
     }
     `;

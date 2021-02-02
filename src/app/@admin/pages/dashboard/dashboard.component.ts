@@ -14,34 +14,39 @@ export class DashboardComponent implements OnInit {
 
   items: Array<IGeneralInfo> = [
     {
-      icon: 'fas fa-archive',
+      icon: 'fas fa-users',
       title: 'Usuarios',
       value: 'users'
     },
     {
-      icon: 'fas fa-users',
+      icon: 'fas fa-tint',
       title: 'Colores',
       value: 'colors'
     },
     {
-      icon: 'fas fa-store-alt',
+      icon: 'fas fa-microblog',
       title: 'Posts',
       value: 'posts'
     },
     {
-      icon: 'fas fa-tags',
+      icon: 'fas fa-atlas',
       title: 'Productos',
       value: 'products'
     },
     {
-      icon: 'fas fa-atlas',
+      icon: 'fas fa-tags',
       title: 'Tags',
       value: 'tags'
     },
     {
-      icon: 'fas fa-gamepad',
+      icon: 'fas fa-angle-double-up',
       title: 'Tallas',
       value: 'tallas'
+    },
+    {
+      icon: 'fas fa-address-book',
+      title: 'Categorias',
+      value: 'categorias'
     }
   ];
   loading = true

@@ -26,7 +26,7 @@ getStats(){
           products: result.products,
           tags: result.tags,
           tallas: result.tallas,
-
+          categorias: result.categorias
       }
     }));
     };
