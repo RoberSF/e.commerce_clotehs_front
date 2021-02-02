@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit {
             title: item.name,
             description: item.description,
             background: item.img,
-            url: '/games/details/'.concat(item.id)
+            url: '/products/details/'.concat(item.id)
           })
         })
       return itemsValues
