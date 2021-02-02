@@ -10,6 +10,9 @@ fragment ProductObject on ProductItem {
           name
           slug
           categoria
+          categoriaInfo {
+            name
+          }
           description
           size
           sizeInfo {
