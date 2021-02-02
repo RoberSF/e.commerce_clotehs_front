@@ -48,4 +48,16 @@ export const PRODUCT_BY_CATEGORIA = gql`
     ${ RESULT_INFO_FRAGMENT }
     ${ PRODUCT_FRAGMENT }
 `
+export const PRODUCT_DETAILS = gql`
 
+    query productDetails($id: ID!) {
+      productDetails(id: $id) {
+        status
+        message
+        product{
+    			...ProductObject
+        }
+      }
+    }
+    ${ PRODUCT_FRAGMENT}
+`
