@@ -6,7 +6,7 @@
 <div class="container-fluid" *ngIf="!loading && infoPage">
 
 
-    <app-product-categori-list [title]="gamesPageInfo.title" [productList]="productList" [description]="gamesPageInfo.description" [showDesc]=true></app-product-categori-list>
+    <!-- <app-product-categori-list [title]="gamesPageInfo.title" [productList]="productList" [description]="gamesPageInfo.description" [showDesc]=true></app-product-categori-list> -->
 
     <div *ngIf="!searchOpen" class="d-flex justify-content-between p-2">
         <ngb-pagination [collectionSize]="infoPage.total" [(page)]="selectPage" (pageChange)="loadData()" [pageSize]="infoPage.itemsPerPage" [maxSize]="15">
