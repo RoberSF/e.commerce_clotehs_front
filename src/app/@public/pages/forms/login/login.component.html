@@ -45,7 +45,7 @@
                 <div class="form-group ">
                     <div class="col-md-12">
                         <div class="checkbox checkbox-primary pull-left p-t-0">
-                            <input [ngModel]="rememeberme" name="rememberMe" id="checkbox-signup" type="checkbox" class="filled-in chk-col-light-blue">
+                            <input name="rememberMe" [(ngModel)]="theCheckbox" (change)="toggleVisibility($event)" id="checkbox-signup" type="checkbox" class="filled-in chk-col-light-blue">
                             <label for="checkbox-signup"> Recuérdame </label>
                         </div>
                     </div>

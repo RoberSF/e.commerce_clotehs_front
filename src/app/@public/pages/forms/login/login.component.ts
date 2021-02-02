@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ILogin } from '@shop/core/Interfaces/IloginForm';
 import { AuthService } from '../../../../services/auth.service';
 import { NgForm } from '@angular/forms';
@@ -23,7 +23,9 @@ export class LoginComponent implements OnInit {
     email: '',
     password: ''
   }
-  rememeberme = false;
+  marked = false;
+  theCheckbox = false;
+
 
   constructor(private auth: AuthService,private router: Router) { }
 
@@ -33,23 +35,25 @@ export class LoginComponent implements OnInit {
     this.login.email = localStorage.getItem('email') || '';
 
     if ( this.login.email.length > 1) {
-      this.rememeberme = true
+      this.theCheckbox = true
     }
+
   }
 
   logIn() {
 
     this.auth.login(this.login.email, this.login.password).subscribe((result: IResultLogin) => {
 
-      if( this.rememeberme === true) {
+
+      if( this.marked === true) {
         localStorage.setItem('email', this.login.email)
       }
 
-      if( this.rememeberme === false ) {
+      if( this.marked === false ) {
+        
         localStorage.removeItem('email')
       }
 
-      console.log(result);
       if(result.status) {
         if(result.token !== null) {
           this.auth.saveSession(result.token);
@@ -74,5 +78,9 @@ export class LoginComponent implements OnInit {
     //   console.log(response);
     //   this.router.navigate(['/dashboard'])
     // })
+  }
+
+  toggleVisibility(e){
+    this.marked= e.target.checked;
   }
 }
