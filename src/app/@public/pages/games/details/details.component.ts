@@ -65,10 +65,10 @@ export class DetailsComponent implements OnInit {
     const id = +$event.target.value
     this.loadDataValue(id)
     //**************************************************************************************************************************
-    //    Esto lo hacemos por que al cambiar de plataforma en details, la url no se cambia, es decir, seguiría el id
-    //      del juego pero con la plataforma anterior. Como consecuencia no nos valdría el path para hacer consultas. Ahora sí                                                             
+    //    Esto lo hacemos por que al cambiar de categorias en details, la url no se cambia, es decir, seguiría el id
+    //      del producto pero con la plataforma anterior. Como consecuencia no nos valdría el path para hacer consultas. Ahora sí                                                             
     //**************************************************************************************************************************
-    window.history.replaceState( {}, '', `/#/games/details/${id}`)
+    window.history.replaceState( {}, '', `/#/products/details/${id}`)
   }
 
 
@@ -86,7 +86,7 @@ export class DetailsComponent implements OnInit {
   }
 
   itemDetail(id: number) {
-    this.router.navigate(['/games/details/', id])
+    this.router.navigate(['/products/details/', id])
   }
 
   addToCart() {
