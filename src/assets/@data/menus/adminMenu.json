@@ -30,6 +30,11 @@
         "icon": "fas fa-atlas"
     },
     {
+        "url": "/admin/categorias",
+        "label": "Categorías",
+        "icon": "fas fa-atlas"
+    },
+    {
         "url": "/admin/posts",
         "label": "Posts",
         "icon": "fas fa-atlas",
@@ -45,5 +50,6 @@
         "label": "Posts - Edit",
         "icon": "fas fa-atlas"
     }
+
 
 ]

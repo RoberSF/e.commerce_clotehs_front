@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { AdminGuard } from '../../guards/admin.guard';
+import { CategoriasModule } from './categorias/categorias.module';
 
 const routes: Routes = [
   {
@@ -28,6 +29,10 @@ const routes: Routes = [
       {
         path: 'sizes',
         loadChildren: () => import('./sizes/sizes.module').then(m => m.SizesModule)
+      },
+      {
+        path: 'categorias',
+        loadChildren: () => import('./categorias/categorias.module').then(m => m.CategoriasModule)
       },
       {
         path: 'colors',
