@@ -3,27 +3,39 @@
     <span class="navbar-toggler-icon"></span>
   </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+
         <ul class="navbar-nav">
-            <li *ngFor="let item of menuItems" class="nav-item">
-                <a class="nav-link" [routerLink]="item.url" routerLinkActive="router-link-active">{{item.label}}</a
-        >
-      </li>
-    </ul>
-    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-      <li class="nav-item" *ngIf="access && role == 'ADMIN'">
-        <a
-          class="nav-link"
-          [routerLink]="['/admin']"
-          routerLinkActive="router-link-active"
-          >Admin</a
-        >
-      </li>
-      <li class="nav-item" *ngIf="!access">
-        <a
-          class="nav-link"
-          [routerLink]="['/login']"
-          routerLinkActive="router-link-active"
-          >Login</a
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/home']" routerLinkActive="router-link-active">Inicio</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/products/products/niños']" routerLinkActive="router-link-active">Niños</a>
+            </li>
+            <li class="nav-item dropdown" *ngFor="let item of menuItems">
+                <a class="nav-link dropdown-toggle" [routerLink]="item.url" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ item.label }}
+            </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                    <a *ngFor="let submenu of item.submenu" [routerLink]="[submenu.url]" class="dropdown-item">{{submenu.label}}</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/blog']" routerLinkActive="router-link-active">Blog</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" [routerLink]="['/contact']" routerLinkActive="router-link-active">Contacto</a>
+            </li>
+        </ul>
+
+
+
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item" *ngIf="access && role == 'ADMIN'">
+                <a class="nav-link" [routerLink]="['/admin']" routerLinkActive="router-link-active">Admin</a>
+            </li>
+            <li class="nav-item" *ngIf="!access">
+                <a class="nav-link" [routerLink]="['/login']" routerLinkActive="router-link-active">Login</a
         >
       </li>
       <li class="nav-item" *ngIf="!access">
@@ -35,15 +47,7 @@
         >
       </li>
       <li class="nav-item dropdown" *ngIf="access">
-        <a
-          class="nav-link dropdown-toggle"
-          href="#"
-          id="navbarDropdown"
-          role="button"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-        >
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {{ userLabel }}
         </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
@@ -56,8 +60,11 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link pointer" (click)="openNav()"><i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                  <span class="badge badge-success notification">{{shoppingCartItemsTotal}}</span></a>
+            <span class="badge badge-success notification">{{shoppingCartItemsTotal}}</span></a>
             </li>
         </ul>
+
+
+
     </div>
 </nav>
