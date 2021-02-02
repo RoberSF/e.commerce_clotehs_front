@@ -47,7 +47,6 @@ export class ShoppingCartService {
       const productTotal = this.shoppingCart.products.length;
       // Comprobamos si hay productos
       if (productTotal === 0 ) {
-        console.log('Producto Añadido');
         this.shoppingCart.products.push(product)
       } else {
         let actionUpdateOk = false;
@@ -58,7 +57,7 @@ export class ShoppingCartService {
               console.log('Producto existente');
               if ( product.qty === 0 ) {
                 console.log('Borrar item seleccionado');
-                //Quitar elemento por que llegó a cero
+                //Quitar elemento por que llegó a cero en el selector
                 this.shoppingCart.products.splice(i, 1);
               } else {
                 // Actualizar con la nueva información
@@ -69,6 +68,7 @@ export class ShoppingCartService {
               i = productTotal;
           }
         }
+        // Si no existe dentro de la lista directamente se añade
         if( !actionUpdateOk) {
           this.shoppingCart.products.push(product)
         }
@@ -124,7 +124,6 @@ export class ShoppingCartService {
 
 
   private setInfo() {
-    console.log('localStorage', this.shoppingCart);
     localStorage.setItem('cart', JSON.stringify(this.shoppingCart))
     this.updateItemsInShoppingCart(this.shoppingCart) // notificamos los cambios con el observable
   }
