@@ -17,6 +17,10 @@
     border-radius: 10px
 }
 
+.dropdown:hover>.dropdown-menu {
+    display: block;
+}
+
 // .fixed {
 //     position: absolute;
 // }
