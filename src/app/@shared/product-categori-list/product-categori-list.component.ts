@@ -28,7 +28,7 @@ export class ProductCategoriListComponent implements OnInit {
   }
 
   showProductDetails($event: IProduct) {
-    this.router.navigate(['/games/details/', $event.id])
+    this.router.navigate(['/products/details/', $event.id])
   }
 
 }
