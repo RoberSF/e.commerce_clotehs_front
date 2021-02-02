@@ -1,56 +1,73 @@
 [{
-        "url": "/home",
-        "label": "Inicio",
-        "icon": ""
-    },
-    {
-        "url": "/products/products/niños",
-        "label": "Niños",
-        "icon": ""
-    },
-    {
         "url": "/products/products/casualVerano",
         "label": "Casual Verano",
-        "icon": ""
+        "icon": "",
+        "submenu": [
+            { "url": "/products/products/camisetasMangaCorta", "label": "Camisetas Manga Corta" },
+            { "url": "/products/products/camisetasDeTirantes", "label": "Camisetas de Tirantes" },
+            { "url": "/products/products/polos", "label": "Polos" }
+        ]
     },
     {
         "url": "/products/products/casualInvierno",
         "label": "Casual Invierno",
-        "icon": ""
+        "icon": "",
+        "submenu": [
+            { "url": "/products/products/camisetasYPolos", "label": "Camisetas y polos M/L" },
+            { "url": "/products/products/chaquetasYsudaderas", "label": "Chaquetas y Sudaderas" },
+            { "url": "/products/products/polares", "label": "Polares" },
+            { "url": "/products/products/ropaAbrigo", "label": "Ropa de abrigo" },
+            { "url": "/products/products/chubasqueros", "label": "Chubasqueros y Cortavientos" }
+        ]
     },
     {
         "url": "/products/products/deBlanco",
         "label": "De blanco",
-        "icon": ""
+        "icon": "",
+        "submenu": [
+            { "url": "/products/products/camisetasInteriores", "label": "Camisetas Interiores" },
+            { "url": "/products/products/calcetines", "label": "Calcetines" }
+        ]
     },
     {
         "url": "/products/products/trabajo",
         "label": "Trabajo",
-        "icon": ""
+        "icon": "",
+        "submenu": [
+            { "url": "/products/products/tecnica", "label": "Ropa Técnica" },
+            { "url": "/products/products/futbol", "label": "Fútbol" },
+            { "url": "/products/products/pantalonesDeportivos", "label": "Pantalones Deportivos" },
+            { "url": "/products/products/hightTech", "label": "Hight Tech" },
+            { "url": "/products/products/chandals", "label": "Chandals" },
+            { "url": "/products/products/bañadores", "label": "Bañadores" }
+        ]
     },
     {
         "url": "/products/products/sport",
         "label": "Sport",
-        "icon": ""
+        "icon": "",
+        "submenu": [
+            { "url": "/products/products/visibilidad", "label": "Alta Visibilidad" },
+            { "url": "/products/products/uniformidad", "label": "Uniformidad" }
+        ]
     },
     {
         "url": "/products/products/headwear",
         "label": "HeadWear",
-        "icon": ""
+        "icon": "",
+        "submenu": [
+            { "url": "/products/products/accesoriosCuello", "label": "Accesosios para el Cuello" },
+            { "url": "/products/products/gorras", "label": "Gorras" }
+        ]
     },
     {
         "url": "/products/products/accesorios",
         "label": "Accesorios",
-        "icon": ""
-    },
-    {
-        "url": "/blog",
-        "label": "Blog",
-        "icon": ""
-    },
-    {
-        "url": "/contact",
-        "label": "Contacto",
-        "icon": ""
+        "icon": "",
+        "submenu": [
+            { "url": "/products/products/accesoriosYcomplementos", "label": "Accesorios y Complementos" },
+            { "url": "/products/products/bolsas", "label": "Bolsas" },
+            { "url": "/products/products/bolsasNoWomen", "label": "Bolsas NON Woman" }
+        ]
     }
 ]
