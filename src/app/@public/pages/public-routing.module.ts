@@ -1,10 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AdminGuard } from 'src/app/guards/admin.guard';
 import { ShopGuard } from 'src/app/guards/shop.guard';
 import { PublicComponent } from './public.component';
-import { FaqModule } from './faq/faq.module';
-import { PostsModule } from './posts/posts.module';
+
 
 //**************************************************************************************************
 //                            Lazy loading                                                           
@@ -54,8 +52,8 @@ const routes: Routes = [
         canActivate: [ShopGuard],
       },
       {
-        path: 'games/details/:id',
-        loadChildren: () => import('./games/details/details.module').then(m => m.DetailsModule)
+        path: 'products/details/:id',
+        loadChildren: () => import('./products/details/details.module').then(m => m.DetailsModule)
       },
       {
         path: 'products/:type/:filter',
