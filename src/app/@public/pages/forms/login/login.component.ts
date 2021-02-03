@@ -1,11 +1,8 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ILogin } from '@shop/core/Interfaces/IloginForm';
 import { AuthService } from '../../../../services/auth.service';
-import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IResultLogin } from '../../../core/Interfaces/IloginForm';
-import Swal from 'sweetalert2'
-import { IMeData } from '@shop/core/Interfaces/ISession';
 import { basicAlert } from '../../../../@shared/alerts/toasts';
 import { TYPE_ALERT } from 'src/app/@shared/alerts/values.config';
 

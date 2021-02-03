@@ -14,6 +14,15 @@ export const SEND_EMAIL_ACTION = gql`
     }
   `;
 
+export const SEND_EMAIL_CONTACT = gql`
+    
+    mutation contactEmail($name: String!, $email: String!, $title: String!, $text: String!) {
+        contactEmail(name: $name, email: $email, title: $title, text: $text) {
+            status
+        }
+    }
+  `;
+
 
 
   
