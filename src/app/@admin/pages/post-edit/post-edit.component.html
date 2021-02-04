@@ -34,7 +34,7 @@
             </mat-form-field> -->
             <div class="form-group">
                 <label for="exampleFormControlInput1">Autor/Referencias</label>
-                <input [(ngModel)]="post.idAuthor" name="idAuthor" #idAuthor="ngModel" type="text" [ngClass]="{'is-valid': title.valid, 'is-invalid': title.invalid}" required class="form-control" id="exampleFormControlInput1">
+                <input [(ngModel)]="post.author" name="idAuthor" #idAuthor="ngModel" type="text" [ngClass]="{'is-valid': title.valid, 'is-invalid': title.invalid}" required class="form-control" id="exampleFormControlInput1">
                 <div class="alert alert-danger" *ngIf="idAuthor.invalid && (idAuthor.dirty || idAuthor.touched)">
                     <div *ngIf="idAuthor.errors.required">
                         Introduzca una referencia por favor
@@ -153,40 +153,40 @@
 
             <div>
                 <button type="button" class="btn btn-primary" matStepperPrevious>Back</button>
-                <button type="button" class="btn btn-primary" matStepperNext>Next</button>
+                <!-- <button type="button" class="btn btn-primary" matStepperNext>Next</button> -->
+                <button type="button" class="btn btn-primary" (click)="submit()">Postear</button>
             </div>
         </form>
     </mat-step>
 
     <!-- Step 3 -->
-    <mat-step>
+    <!-- <mat-step>
 
         <form #f="ngForm">
-            <ng-template matStepLabel>Imagen</ng-template>
+            <ng-template matStepLabel>Imagen</ng-template> -->
 
-            <!-- Modal -->
-            <div id="modalImg" class="fondo-negro animated fadeIn" *ngIf="this.open">
+    <!-- Modal -->
+    <!-- <div id="modalImg" class="fondo-negro animated fadeIn" *ngIf="this.open">
                 <div class="modal" style="display: block;" tabindex="-1" role="dialog">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h5 class="modal-title">Subir Imagen</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <!-- le estoy asignando al string hiden la palabra oculto, que sería la clase en el css -->
                             <span aria-hidden="true">&times;</span>
                           </button>
                             </div>
-                            <div class="modal-body text-center">
+                            <div class="modal-body text-center"> -->
 
 
 
-                                <!-- <img *ngIf="!imagenTemp" [src]="'xxx' | imagen: 'xxx'" class="w-150"> -->
-                                <img *ngIf="imagenTemp" [src]="imagenTemp" class="w150">
+    <!-- <img *ngIf="!imagenTemp" [src]="'xxx' | imagen: 'xxx'" class="w-150"> -->
+    <!-- <img *ngIf="imagenTemp" [src]="imagenTemp" class="w150"> -->
 
-                                <input (change)="selectImage($event.target.files[0])" type="file">
+    <!-- <input (change)="selectImage($event.target.files[0])" type="file"> -->
 
 
-
+    <!-- 
                             </div>
                             <div class="modal-footer">
                                 <button (click)="closeSelectImg()" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -207,6 +207,6 @@
                 <button type="button" class="btn btn-primary" (click)="submit()">Postear</button>
             </div>
         </form>
-    </mat-step>
+    </mat-step> -->
 
 </mat-vertical-stepper>

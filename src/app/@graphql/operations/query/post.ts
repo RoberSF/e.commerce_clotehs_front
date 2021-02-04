@@ -16,6 +16,7 @@ export const POST_LIST_QUERY = gql`
           intro
           contenido
           categoria
+          author
           img
           date
           active
@@ -32,16 +33,17 @@ export const POST_QUERY = gql`
         status
         message
         post {
-        id
-        title
-        intro
-        contenido
-        categoria
-        img
+          id
+          title
+          intro
+          author
+          contenido
+          categoria
+          date
+          img
       }
       }
     }
-    ${ RESULT_INFO_FRAGMENT }
 `;
 
 export const SEARCH_POST_QUERY = gql`
@@ -53,9 +55,13 @@ export const SEARCH_POST_QUERY = gql`
       message
       posts {
         id
-        title
-        categoria
-        active
+          title
+          intro
+          author
+          contenido
+          categoria
+          date
+          img
       }
     }
   }

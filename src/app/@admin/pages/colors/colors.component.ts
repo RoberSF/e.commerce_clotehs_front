@@ -5,15 +5,14 @@ import { COLORS_LIST_QUERY, SEARCH_COLOR_QUERY } from '@graphql/operations/query
 import { IResultData } from '@shop/core/Interfaces/IResultData';
 import { ITableColumns } from '@shop/core/Interfaces/ITableColumns';
 import { DocumentNode } from 'graphql';
-import { formBasicDialog, formColorDialog, optionsWithDetails } from 'src/app/@shared/alerts/alerts';
+import { formColorDialog, optionsWithDetails } from 'src/app/@shared/alerts/alerts';
 import { basicAlert } from 'src/app/@shared/alerts/toasts';
 import { TYPE_ALERT } from 'src/app/@shared/alerts/values.config';
 import { ColorService } from 'src/app/services/color.service';
 import { IColor } from '../../core/interfaces/IColor';
 import { ApiService } from '../../../@graphql/services/api.service';
 import { NgForm } from '@angular/forms';
-import { fileURLToPath } from 'url';
-import { type } from 'os';
+
 import { ModalUploadService } from '../../../@shared/modal-upload/modal-upload.service';
 
 
@@ -93,6 +92,7 @@ export class ColorsComponent implements OnInit {
     // Cogemos el valor por defecto
     const defaultName = color.name !== undefined && color.name !== '' ? color.name : '';
     const defaultCode = color.code !== undefined && color.code !== '' ? color.code : '';
+
     const html = `<input id="name" placeholder="Añadir nombre" value="${defaultName}" class="swal2-input" required>
                   <input id="code" placeholder="Añadir codigo" value="${defaultCode}" class="swal2-input" required>
                   <select id="active" class="swal2-input">
@@ -142,7 +142,9 @@ export class ColorsComponent implements OnInit {
 //**************************************************************************************************
  
   private async addForm(html: string) {
+    console.log(html);
     const result = await formColorDialog('Añadir color', html, 'name');
+    console.log(result);
     const color: IColor = {
       name: result.value[0],
       code: result.value[1],

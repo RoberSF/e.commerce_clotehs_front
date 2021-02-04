@@ -14,9 +14,8 @@ export class DetailsComponent implements OnInit {
 
 
   post: Post = new Post('','' , '', '', '','','',);
-  role: string;
   
-  constructor(public activatedRoute: ActivatedRoute, public postService: PostService, public route: Router, public userService: UsersService) {
+  constructor(public activatedRoute: ActivatedRoute, public postService: PostService, public route: Router) {
     this.activatedRoute.params.subscribe(params => { //Esto es para acceder a los parametros de la url 
 
       let id = params['id'] // como sabemos que es id? por que en el routing.module pusimos "":id"
@@ -33,30 +32,10 @@ export class DetailsComponent implements OnInit {
   }
 
   cargarPost(id :string) {
-    this.postService.getPost(id).subscribe( post => {
-      this.post = post ;
+    this.postService.getPost(id).subscribe( result => {
+      this.post = result.post ;
   })
 };
 
-deletePost(_id:any) {
-
-  // swal({
-  //   title: "Está seguro?",
-  //   text: "Una vez borrada tendrá que volver a crearlo!",
-  //   icon: "warning",
-  //   buttons: ["Cancelar", "Borra cita"],
-  //   dangerMode: true,
-  // })
-  // .then((willDelete) => {
-   
-  //   if ( willDelete) {
-  //     this.postService.deletePost(_id).subscribe( (deletedPost) => {
-  //       this.route.navigate(['/blog']);
-  //     })
-  //   } 
-
-  // });
-
-}
 
 }

@@ -5,6 +5,8 @@ import { Component, OnInit } from '@angular/core';
 // import { UsuarioService } from 'src/app/services/usuario/usuario.service';
 import { PostService } from 'src/app/services/post.service';
 import { UsersService } from '../../../services/users.service';
+import { basicAlert } from '../../../@shared/alerts/toasts';
+import { TYPE_ALERT } from 'src/app/@shared/alerts/values.config';
 
 @Component({
   selector: 'app-post-edit',
@@ -30,82 +32,17 @@ export class PostEditComponent implements OnInit {
 
    submit() {
 
-    //**************************************************************************************************
-    //                                     Esto sería vanilla.js(js puro)                                                           
-    //**************************************************************************************************
-    
-      //console.log(this.post);
-      return new Promise((resolve,reject) => {
-  
-        let formData = new FormData();
-        formData.append('title', this.post.title);
-        formData.append('intro', this.post.intro);
-        formData.append('contenido', this.post.contenido);
-        formData.append('categoria', this.post.categoria);
-        formData.append('comentarios', this.post.comentarios);
-        formData.append('date', this.post.date);
-        formData.append('imagen', this.post.img, this.post.img.name);
-        formData.append('idAuthor',this.post.idAuthor );
-  
-  
-        let xhr = new XMLHttpRequest(); //inicializamos la petición ajax
-  
-        //let url = URL_SERVICIOS + '/post'
-        //let url = URL_SERVICIOS + '/post/postImg'
-  
-        //xhr.open('POST',url, true ); // el true dice si quiero que sea asincrono
-  
-        xhr.onreadystatechange = function() { 
-          
-          // esto es la configuracion de la petición ajax, de como va a funcionar
-  
-          console.log(xhr.readyState);
-          console.log(xhr.status); // Me da los tipos de resultados de la petición, podría hacer los loader
-          if ( xhr.readyState === 4 ) { // el 4 es un estado de la subida, podría jugar con ellos para hacer un loading
-             if (xhr.status === 200 || xhr.status === 200  ) {
-              //  swal('Post Subido Correctamente', 'success');
-               resolve(JSON.parse(xhr.response));
-             } else {
-            //  swal('Subida Fallida', 'wrong');
-            //    reject(xhr.response)
-              }
-           }
-        };
-  
-        xhr.send(formData);
-  
-      })
-    
+    this.postService.postPost(this.post).subscribe( result => {
+
+      if(result.status) {
+        basicAlert(TYPE_ALERT.SUCCESS, 'Post subido correctamente');
+        this.post = new Post('','','','','','','')
+      }
+
+    })
      }
 
     subirImg() {
-      this.open = true
-    }
-
-    selectImage(file: File) {
-
-      // console.log('File',file);
-  
-      if( !file ) {
-        this.uploadFile = null;
-        return;
-      }
-  
-      if ( file.type.indexOf('image') <0 ) {
-        //swal('Sólo imagenes')
-      }
-  
-      this.uploadFile = file;
-  
-  
-      let reader = new FileReader(); //esto es javascript puro
-      let urlImagenTemp =  reader.readAsDataURL(file);
-  
-      reader.onloadend = () => {
-        this.imagenTemp = reader.result;
-        //this.post.img = this.uploadFile;
-      }
-  
   
     }
 
@@ -119,7 +56,6 @@ export class PostEditComponent implements OnInit {
 
     saveImg() {
       this.open = false;
-      // console.log(this.post);
     }
 
 }

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm navbar-dark custom-bg sticky-top fixed">
+<nav class="navbar navbar-expand-sm navbar-light custom-bg sticky-top fixed" style="background-color: #e3f2fd;">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -52,7 +52,7 @@
         </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">Perfil</a>
-                    <a class="dropdown-item" [routerLink]="['/settings']">Ajustes</a>
+                    <!-- <a class="dropdown-item" [routerLink]="['/settings']">Ajustes</a> -->
                     <a class="dropdown-item" [routerLink]="['/orders']" routerLinkActive>Pedidos</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" (click)="logout()">Salir de la sesión</a>

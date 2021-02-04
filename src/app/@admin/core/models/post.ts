@@ -5,11 +5,10 @@ export class Post {
         public intro?: string,
         public contenido?: string,
         public categoria?: string,
-        public comentarios?: string,
         public date?: string,
-        public idAuthor?: string,
-        public img?: File,
-        public _id?: string,
+        public author?: string,
+        public id?: string,
+        public img?: string
     ) { }
 
 }

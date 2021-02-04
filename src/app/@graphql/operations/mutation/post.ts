@@ -1,6 +1,5 @@
 import gql from 'graphql-tag';
-import { GENRE_FRAGMENT } from '../fragment/genre';
-import { TAG_FRAGMENT } from '../fragment/tag';
+
 
 
 
@@ -14,7 +13,6 @@ export const ADD_POST = gql`
 
 mutation addPost($post: PostInput!) {
     addPost(post: $post) {
-      info
       status
       message
       post {
@@ -23,6 +21,7 @@ mutation addPost($post: PostInput!) {
         intro
         contenido
         categoria
+        author
         img
       }
     }

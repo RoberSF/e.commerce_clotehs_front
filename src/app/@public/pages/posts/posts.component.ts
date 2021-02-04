@@ -1,5 +1,6 @@
 import { Post } from '@admin/core/models/post';
 import { Component, OnInit } from '@angular/core';
+import { SEARCH_COLOR_QUERY } from '@graphql/operations/query/color';
 import { PostService } from '../../../services/post.service';
 
 @Component({
@@ -27,28 +28,26 @@ export class PostsComponent implements OnInit {
 
     this.postService.getPosts(this.sincePost).subscribe((data:any) => {
 
-      this.totalPosts = this.postService.totalPosts;
-      this.posts = data;
+      this.totalPosts = data.info.total;
+      this.posts = data.posts;
       //this.loading = false;
       // console.log(data);
     });
   };
 
-  searchPost(value: string) {
-    // console.log(value);
 
+  search(value: string) {
 
-    if ( value.length <= 0  ) {
-      this.getPosts() 
-      return;
+    if(value.length < 1) {
+      this.getPosts();
     }
 
-    // this.postService.searchPost(value).subscribe( (findPost:any) => {
-    //   if ( findPost.tabla ) {
-    //     this.posts = findPost.tabla;
-    //   }
-     
-    // })
-  };
+    this.postService.searchPost(value).subscribe( result => {
+      this.posts = result.posts}
+      )
+
+
+
+  }
 
 }

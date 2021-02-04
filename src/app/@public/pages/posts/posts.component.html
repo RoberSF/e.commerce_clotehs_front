@@ -1,96 +1,90 @@
 <!-- Page Content -->
-
 <div class="container">
 
     <div class="row">
 
-        <!-- Blog Entries Column -->
-        <div class="col-md-8">
-
-            <h2 class="my-4">Aquí tienes todas mis recomendaciones(<small>totalPosts</small>)
-                <!-- <small>:)</small> -->
-            </h2>
-
-            <!-- Blog Post -->
-            <!-- <div *ngFor="let post of posts" class="card mb-4"> -->
-            <div class="card mb-4">
-                <!-- <img class="card-img-top" [src]="post.img | imagen: 'post'" alt="Card image cap"> -->
-                <img class="card-img-top" alt="Card image cap">
-                <!-- <div [routerLink]="['/blog-post', post._id]" class="card-body"> -->
-                <div class="card-body">
-                    <!-- <div [routerLink]="['/blog-post/']" class="card-body"> -->
-                    <!-- <h2 class="card-title">{{post.title}}</h2> -->
-                    <h2 class="card-title">post.title</h2>
-                    <!-- <p class="card-text" [innerHtml]="post.intro"></p> -->
-                    <p class="card-text"></p>
-                    <!-- <a [routerLink]="['/blog-post', post._id]" class="btn btn-primary">Read More &rarr;</a> -->
-                    <a class="btn btn-primary">Read More &rarr;</a>
-                </div>
-                <div class="card-footer text-muted">
-                    post.date
-                </div>
+        <!-- Search Widget -->
+        <div class="col-lg-10">
+            <h5 class="card-header">Search</h5>
+            <div class="card-body">
+                <div class="input-group">
+                    <input #input (keyup.enter)="search(input.value)" type="text" class="form-control" placeholder="Busca por...">
+                    <span class="input-group-append">
+            <button (click)="search(input.value)" class="btn btn-secondary" type="button">Buscar!</button>
+          </span>
+                </div><br>
+                <button (click)="search('')" class="btn btn-danger" type="button">Reset</button>
             </div>
+        </div>
+        <!-- Post Content Column -->
+        <div *ngFor="let post of posts" class="col-lg-10">
 
+            <!-- Title -->
+            <h1 [routerLink]="['/blog', post.id]" class="mt-4 pointer">{{post.title}}</h1>
 
+            <!-- Author -->
+            <p class="lead">
+                by
+                <a>{{post.author}}</a>
+            </p>
 
-            <!-- Pagination -->
-            <ul class="pagination justify-content-center mb-4">
-                <li class="page-item">
-                    <!-- <a class="page-link" (click)="page(-5)">&larr; Anteriores</a> -->
-                    <a class="page-link">&larr; Anteriores</a>
-                </li>
-                <!-- <li class="page-item disabled"> -->
-                <li class="pagination justify-content-center mb-4">
-                    <!-- <a class="page-link" (click)="page(+5)">Siguientes &rarr;</a> -->
-                    <a class="page-link">Siguientes &rarr;</a>
-                </li>
-            </ul>
+            <hr>
+
+            <!-- Date/Time -->
+            <p>Creado {{post.date | date}}</p>
+
+            <hr>
+
+            <!-- Preview Image -->
+            <img [routerLink]="['/blog', post.id]" class="card-img-top pointer" [src]="post.img" alt="Card image cap">
+            <hr>
+
+            <!-- Post Content -->
+            <p class="lead" [innerHtml]="post.intro"></p>
+            <a [routerLink]="['/blog', post.id]" class="btn btn-primary pointer">Leer más &rarr;</a>
+            <hr>
 
         </div>
 
         <!-- Sidebar Widgets Column -->
         <div class="col-md-4">
 
-            <!-- Search Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">Search</h5>
-                <div class="card-body">
-                    <div class="input-group">
-                        <!-- <input #input (keyup)="searchPost(input.value)" type="text" class="form-control" placeholder="Search for..."> -->
-                        <input #input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-append">
-              </span>
-                    </div>
-                </div>
-            </div>
+
 
             <!-- Categories Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">Categorias</h5>
+            <!-- <div class="card my-4">
+                <h5 class="card-header">Categories</h5>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-lg-6">
-                            <!-- <ul *ngFor="let categoria of categorias" class="list-unstyled mb-0"> -->
                             <ul class="list-unstyled mb-0">
-                                <!-- <li (click)="postByCategoria(categoria.nombre)"> -->
                                 <li>
-                                    <!-- <a class="pointer">{{categoria.nombre}}</a> -->
-                                    <!-- <a class="pointer">categoria.nombre</a> -->
+                                    <a>Web Design</a>
+                                </li>
+                                <li>
+                                    <a>HTML</a>
+                                </li>
+                                <li>
+                                    <a>Freebies</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled mb-0">
+                                <li>
+                                    <a>JavaScript</a>
+                                </li>
+                                <li>
+                                    <a>CSS</a>
+                                </li>
+                                <li>
+                                    <a>Tutorials</a>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Side Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">Recomendación Externa</h5>
-                <div class="card-body">
-                    Aquí te dejo mis recomendaciones a entradas de compañeros muy interesantes
-                </div>
-            </div>
-
+            </div> -->
         </div>
 
     </div>
@@ -98,13 +92,3 @@
 
 </div>
 <!-- /.container -->
-
-<!-- Footer -->
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <!-- <p class="m-0 text-center text-white">Copyright &copy; Your Website 2020</p> -->
-        <p class="m-0 text-center text-white">Esto es un mensaje para informar que todas las opiniones son igual de válidas y que es meramente informativo y los mensajes serán mediados para evitar cualquier tipo de incidente :) Espero que se comprenda. Buen días a tod@s!!
-        </p>
-    </div>
-    <!-- /.container -->
-</footer>

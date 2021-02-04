@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { map, filter, switchMap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ADD_POST, MODIFY_POST, BLOCK_POST, UNBLOCK_POST, DELETE_POST } from '../@graphql/operations/mutation/post';
 import { Apollo } from 'apollo-angular';
 import { ApiService } from '../@graphql/services/api.service';
-import { POST_LIST_QUERY, POST_QUERY } from '../@graphql/operations/query/post';
+import { POST_LIST_QUERY, POST_QUERY, SEARCH_POST_QUERY } from '../@graphql/operations/query/post';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class PostService extends ApiService {
 
   getPosts(page: number = 1, itemsPerPage: number = 10){ 
     return this.get(POST_LIST_QUERY,{itemsPerPage,page }).pipe(map( (result:any) => {
-      return  result.users;
+      return  result.posts;
     }));
     };
 
@@ -78,21 +78,12 @@ getPost(id: string) {
       }));
   }
 
+  searchPost(value: string ) {
 
-//   async subirPost(post: FormData) {
+    return this.get(SEARCH_POST_QUERY, { value}, {}).pipe(map( (result: any) => {
+      return result.postSearch;
+    }))
+  }
 
-//     let url = URL_SERVICIOS + '/post/postImg'
-
-//     var headers = new HttpHeaders({
-//       'Content-Type': 'application/json',
-//        Authorization: this.usuarioService.token
-//     });
-
-//     return this.http.post(url, post, {headers: headers}).pipe(map( // {title} se pone así por que es el unico parametro que está recibiendo, en este caso son obligatorios más, asi que tendría que enviarle más parámetros
-//       (resp:any) => {
-//         swal('Post creado', 'success');
-//         return resp.post;
-//       }));
-// }
 
 }
