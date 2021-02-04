@@ -60,6 +60,10 @@ const routes: Routes = [
         loadChildren: () => import('./products/products.module').then(m => m.ProductsModule)
       },
       {
+        path: 'about',
+        loadChildren: () => import('./about/about.module').then(m => m.AboutModule)
+      },
+      {
         path: 'login',
         loadChildren: () => import('./forms/login/login.module').then(m => m.LoginModule)
       },
