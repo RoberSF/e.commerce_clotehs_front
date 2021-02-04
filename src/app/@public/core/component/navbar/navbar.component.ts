@@ -23,13 +23,16 @@ export class NavbarComponent implements OnInit {
   access = false;
   role: string;
   userLabel = '';
+
   constructor(private authService: AuthService, private shoppingCartService: ShoppingCartService, private router: Router) {
+
     this.authService.accessVar$.subscribe((result) => {
       this.session = result;
       this.access = this.session.status;
       this.role = this.session.user?.role;
       this.userLabel = `${ this.session.user?.name } ${ this.session.user?.lastname }`;
     });
+    
     this.shoppingCartService.itemsVar$.subscribe( (data: IShoppingCart) => {
       if ( data !== undefined && data !== null) {
         this.shoppingCartItemsTotal = data.subtotal
