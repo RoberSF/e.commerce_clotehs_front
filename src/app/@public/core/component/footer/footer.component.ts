@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { IMeData } from '@shop/core/Interfaces/ISession';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -14,7 +15,7 @@ export class FooterComponent implements OnInit {
   };
   access = false;
 
-  constructor(private authService: AuthService) { 
+  constructor(private authService: AuthService,private router: Router) { 
 
     this.authService.accessVar$.subscribe((result) => {
       this.session = result;
@@ -24,6 +25,12 @@ export class FooterComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  async logout() {
+
+    // En caso de encontrarla, marcamos para que redireccione
+    this.authService.resetSession(this.router.url);
+}
 
 
 }
