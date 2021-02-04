@@ -7,6 +7,8 @@ import { ReturnsComponent } from './returns/returns.component';
 import { AboutComponent } from './about.component';
 import { CustomerServiceComponent } from './customer-service/customer-service.component';
 import { MapComponent } from './map/map.component';
+import { DeliveriesComponent } from './deliveries/deliveries.component';
+import { WarrantyComponent } from './warranty/warranty.component';
 
 
 const routes: Routes = [
@@ -37,6 +39,14 @@ const routes: Routes = [
   {
     path: 'map',
     component: MapComponent
+  },
+  {
+    path: 'deliveries',
+    component: DeliveriesComponent
+  },
+  {
+    path: 'warranty',
+    component: WarrantyComponent
   },
 ];
 
