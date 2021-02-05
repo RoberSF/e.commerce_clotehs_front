@@ -32,6 +32,7 @@ export class ProductsComponent implements OnInit {
   typeData: TYPE_OPERATION;
   loading: boolean;
   searchOpen = false;
+  totalRegisters: number = 0;
   
   constructor(private productsService: ProductsService, private activatedRoute: ActivatedRoute,private auth: AuthService, private categoriListService: CategoriListService,
     private paginationService: TablePaginationService) { }
@@ -93,5 +94,6 @@ export class ProductsComponent implements OnInit {
     this.searchOpen = false;
     this.loadData()
   }
+
 
 }

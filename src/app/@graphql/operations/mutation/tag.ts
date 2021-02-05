@@ -1,5 +1,4 @@
 import gql from 'graphql-tag';
-import { GENRE_FRAGMENT } from '../fragment/genre';
 import { TAG_FRAGMENT } from '../fragment/tag';
 
 

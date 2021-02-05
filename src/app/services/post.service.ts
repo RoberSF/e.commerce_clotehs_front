@@ -19,7 +19,7 @@ export class PostService extends ApiService {
 
 
   getPosts(page: number = 1, itemsPerPage: number = 10){ 
-    return this.get(POST_LIST_QUERY,{itemsPerPage,page }).pipe(map( (result:any) => {
+    return this.get(POST_LIST_QUERY,{page,itemsPerPage}).pipe(map( (result:any) => {
       return  result.posts;
     }));
     };

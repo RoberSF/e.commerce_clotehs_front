@@ -61,9 +61,12 @@
                 </div>
                 <hr class="mb-4">
                 <button *ngIf="stripe" (click)="sendData()" [disabled]="!form.valid || blockOnce" class="signup-btn" type="submit">Pagar pedido</button>
-                <!-- <button *ngIf="paypal" (click)="sendData()" [disabled]="!form.valid || blockOnce" class="signup-btn paypal" type="submit">Pagar por PayPal</button> -->
-                <!-- <button (click)="addPaypalScript()" *ngIf="paypal" (click)="sendData()" [disabled]="!form.valid || blockOnce" class="signup-btn paypal" type="submit">Pagar por PayPal</button> -->
-                <ngx-paypal *ngIf="paypal" [config]="payPalConfig"></ngx-paypal>
+                <ngx-paypal *ngIf="paypal && form.valid, else noDiscount" [config]="payPalConfig"></ngx-paypal>
+                <ng-template #noDiscount>
+                    <div class="alert alert-dark" role="alert">
+                        Rellene los campos para poder pagar con este método. Gracias!
+                    </div>
+                </ng-template>
             </form>
         </div>
 

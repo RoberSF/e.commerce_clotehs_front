@@ -34,7 +34,6 @@ export class UsersService extends ApiService {
 
     update(user: string) {
       return this.set(MODIFY_USER, {user,include: false}).pipe(map( (result: any) => {
-          console.log(result.updateUser);
           return result.updateUser;
         }));
     }

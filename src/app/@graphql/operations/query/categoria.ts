@@ -5,8 +5,8 @@ import { TAG_FRAGMENT } from '../fragment/tag';
 
 export const CATEGORIAS_LIST_QUERY = gql`
 
-    query categorias($page: Int!, $itemsPage: Int, $active:ActiveFilterEnum) {
-        categorias(page: $page, itemsPerPage: $itemsPage, active: $active) {
+    query categorias($page: Int, $itemsPerPage: Int, $active:ActiveFilterEnum) {
+        categorias(page: $page, itemsPerPage: $itemsPerPage, active: $active) {
         info {
           ...ResultInfoObject
         }

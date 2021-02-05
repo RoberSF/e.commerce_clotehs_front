@@ -20,6 +20,9 @@ import { MailService } from '../../../../services/mail.service';
 import { IStock } from '@shop/core/Interfaces/IStock';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
+import { basicAlert } from '../../../../@shared/alerts/toasts';
+import { SaleService } from '../../../../services/sales.service';
+import { ISale } from '@shop/core/Interfaces/ISale';
 
 @Component({
   selector: 'app-checkout',
@@ -44,7 +47,8 @@ export class CheckoutComponent implements OnInit  {
     private shoppingCartService: ShoppingCartService,
     private customerService: CustomerService,
     private chargesService: ChargesService,
-    private mailService: MailService) {
+    private mailService: MailService,
+    private saleService: SaleService) {
 
       //****************************************************************************************************************************************************************************************************
       //                         Trabajamos desde el constructor ya que la librería de Anatz funciona así. 
@@ -127,12 +131,13 @@ export class CheckoutComponent implements OnInit  {
           this.chargesService.pay(payment, stockManage).pipe(take(1)).subscribe( async (result: {status: boolean, message: string, charge: ICharge}) => {
             if ( result.status) {
               await infoEventAlert('Pedido realizado correctamente', 'Pedido efectuado correctamente. ¡¡Gracias por tu compra!!', TYPE_ALERT.SUCCESS);
-              this.sendEmail(result.charge);
+              this.saleService.addOperation(result.charge, 'stripe').subscribe()
               this.router.navigate(['/orders']);
               this.shoppingCartService.clear();
             } else {
               await infoEventAlert('Pedido no se realizado', '¡¡Inténtelo de nuevo por favor!!', TYPE_ALERT.SUCCESS);
             }
+            this.saleService.addOperation(result.charge, 'stripe')
             // Una vez realizado el pago se bloquea el botón
             this.blockOnce = false;
           })
@@ -216,18 +221,6 @@ export class CheckoutComponent implements OnInit  {
     this.stripePaymentService.takeCardToken(true);
   }
 
-  sendEmail(charge: ICharge) {
-    
-    const mail: IMail = {
-      to: charge.receiptEmail,
-      subject: 'Confirmación del pedido',
-      html: `
-      El pedido se ha realizado correctamente. Puedes consultarlo en <a href="${charge.receiptUrl}" target="_blanck"></a>
-      `
-    }
-    this.mailService.sendEmail(mail).pipe(take(1)).subscribe();
-  }
-
   payMethod(method) {
     
     if ( method === 'paypal' ) {
@@ -242,35 +235,28 @@ export class CheckoutComponent implements OnInit  {
     }
   }
 
-  private initConfig(): void {
+  private async initConfig() {
+
     this.payPalConfig = {
     currency: 'EUR',
     clientId: 'AbE0JovguFMYFBXv3gkf3GjFWZWAK7KBiVnsyXme_CZl8Vth6JeT6nUhtY4JrZHrdfpaHXSf58wPBWgs',
     createOrderOnClient: (data) => <ICreateOrderRequest>{
+
+      
       intent: 'CAPTURE',
       purchase_units: [
         {
           amount: {
-            currency_code: 'EUR',
-            value: '9.99',
+            currency_code: CURRENCY_CODE,
+            value: this.shoppingCartService.shoppingCart.total.toString(),
             breakdown: {
               item_total: {
-                currency_code: 'EUR',
-                value: '9.99'
+                currency_code: CURRENCY_CODE,
+                value: this.shoppingCartService.shoppingCart.total.toString()
               }
             }
           },
-          items: [
-            {
-              name: 'Enterprise Subscription',
-              quantity: '1',
-              category: 'DIGITAL_GOODS',
-              unit_amount: {
-                currency_code: 'EUR',
-                value: '9.99',
-              },
-            }
-          ]
+          items: this.manegeInfoPaypal()
         }
       ]
     },
@@ -282,49 +268,107 @@ export class CheckoutComponent implements OnInit  {
       layout: 'vertical'
     },
     onApprove: (data, actions) => {
-      console.log('onApprove - transaction was approved, but not authorized', data, actions);
       actions.order.get().then(details => {
-        // console.log('onApprove - you can get full order details inside onApprove: ', details);
+        this.saleService.addOperation(details, 'paypal').subscribe()
+        this.router.navigate(['/orders']);
+        this.shoppingCartService.clear();
       });
     },
     onClientAuthorization: (data) => {
-      console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
+      basicAlert(TYPE_ALERT.SUCCESS, ' you should probably inform your server about completed transaction at this point')
     },
     onCancel: (data, actions) => {
-      console.log('OnCancel', data, actions);
       infoEventAlert('Transaction correctamente cancelada','')
     },
     onError: err => {
       console.log('OnError', err);
+      infoEventAlert('Error en la transación','')
     },
     onClick: (data, actions) => {
-      console.log('onClick', data, actions);
     },
   };
   }
 
+  manegeInfoPaypal() {
+
+    const items = [];
+
+    for (let value of this.shoppingCartService.shoppingCart.products) {
+      items.push(
+        {name: value.name, 
+          quantity: value.qty, 
+          description: value.description, 
+          unit_amount: {
+            currency_code: CURRENCY_CODE,
+            value: value.price
+            }
+          }
+          );
+    }
+
+    return items
+  }
+
+  manageOperation(sale: any, type: string) {
+
+    if ( type === 'stripe') {
+
+        const operation: ISale = {
+            operationId: sale.id,
+            emailAdress: this.meData.user.email,
+            clientName: this.meData.user.name,
+            clientPlatformId: sale.customer,
+            url: sale.receiptUrl ,
+            date: sale.created ,
+            status: sale.status,
+            platform: 'stripe',
+            totalOperation: sale.amount,
+            active: true
+        }
+        this.sendEmail(operation)
+        return operation
+    }
+
+    if ( type === 'paypal') {
+
+        const operation: ISale = {
+            operationId: sale.id,
+            emailAdress: this.meData.user.email,
+            clientName: this.meData.user.name,
+            clientPlatformId: sale.payer.payer_id,
+            url: sale.links[0].href ,
+            date: sale.create_time ,
+            status: sale.status,
+            platform: 'paypal',
+            totalOperation: sale.purchase_units[0].amount.value,
+            active: true
+        }
+        this.sendEmail(operation)
+        return operation
+    }
+
+
+    
 }
 
-// paypalconfig: any = {
-//   env: 'sandbox',
-//   client: {
-//     sandbox: 'AbE0JovguFMYFBXv3gkf3GjFWZWAK7KBiVnsyXme_CZl8Vth6JeT6nUhtY4JrZHrdfpaHXSf58wPBWgs',
-//     production: 'EKxAHNKCy8PzPPK40ms1b1Tp9JMYS9HubQQukTmk26cXi-CWZy4yc2yQU3-dPzVx981TmWTEP-R6rV40'
-//   },
-//   commit:true,
-//   payment: (data,actions) => {
-//     return actions.payment.create({
-//       payment: {
-//         transactions: [
-//           { amount: {total: 10, currency: 'EUR'}}
-//         ]
-//       }
-//     })
-//   },
-//   onAuthorize: (data, actions) => {
-//     return actions.payment.execute().then( (payment) => {
-//       console.log('Pago efectuado');
-//       console.log(payment);
-//     })
-//   }
-// }
+  sendEmail(operation: ISale) {
+    
+    const mail: IMail = {
+      to: [operation.emailAdress, 'onlineshoprsf@gmail.com'],
+      subject: 'Confirmación del pedido',
+      html: `
+      <h6> Gracias por confiar en nosotros!! </h6>
+      <p> Estamos muy contentos de que hayas realizado el pedido con nosotros</p>
+      <p>El pedido se ha realizado correctamente. Puedes consultarlo aquí: <a href="${operation.url}" target="_blanck">Click</a></P>
+      <p> Esperamos que disfrute de su compra</p>
+      <p> Muchas gracias!! </p>
+      <p> Saludos de parte de todo el equipo! :)</p>
+      `
+    }
+    this.mailService.sendEmail(mail).pipe(take(1)).subscribe();
+  }
+
+}
+
+
+

@@ -3,8 +3,8 @@ import { RESULT_INFO_FRAGMENT } from '../fragment/result-info';
 
 export const POST_LIST_QUERY = gql`
 
-    query posts($page: Int!, $itemsPage: Int, $active:ActiveFilterEnum) {
-      posts(page: $page, itemsPerPage: $itemsPage, active: $active) {
+    query posts($page: Int!, $itemsPerPage: Int, $active:ActiveFilterEnum) {
+      posts(page: $page, itemsPerPage: $itemsPerPage, active: $active) {
         info {
           ...ResultInfoObject
         }

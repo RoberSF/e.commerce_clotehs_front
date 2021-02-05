@@ -77,7 +77,7 @@ ngOnInit(): void {
 
     const variables = {
       page: this.infoPage.page,
-      itemsPerPage: this.itemsPerPage,
+      itemsPerPage: this.infoPage.itemsPerPage,
       include: this.include,
       active: this.filterActiveValue,
       value: res[0],
@@ -128,13 +128,15 @@ ngOnInit(): void {
     loadData('Cargando los datos', 'Casi estamos')
     const variables = {
       page: this.infoPage.page,
-      itemsPerPage: this.itemsPerPage,
+      itemsPerPage: this.infoPage.itemsPerPage,
       include: this.include,
       active: this.filterActiveValue
     }
 
+
     this.data$ = this.paginationService.getCollectionData(this.query, variables, {}).pipe(map(
       (result:any) => {
+
         const data = result[this.resultData.definitionKey];
         this.infoPage.pages = data.info.pages;
         this.infoPage.total = data.info.total;

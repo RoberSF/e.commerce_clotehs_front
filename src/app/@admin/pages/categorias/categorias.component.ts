@@ -31,7 +31,7 @@ export class CategoriasComponent implements OnInit {
   ngOnInit(): void {
     this.titleService.updateTitle('Categorias')
     this.context = {};
-    this.itemsPerPage = 20;
+    this.itemsPerPage = 10;
     this.resultData = {
       listKey: 'categorias',
       definitionKey: 'categorias',

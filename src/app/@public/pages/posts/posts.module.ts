@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { PostsRoutingModule } from './posts-routing.module';
 import { PostsComponent } from './posts.component';
+import { NgbPaginationModule } from '@ng-bootstrap/ng-bootstrap';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -10,6 +12,8 @@ import { PostsComponent } from './posts.component';
   imports: [
     CommonModule,
     PostsRoutingModule,
+    NgbPaginationModule,
+    FormsModule
   ]
 })
 export class PostsModule { }
