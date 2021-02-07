@@ -15,14 +15,12 @@ import { IPayment } from '../../../core/Interfaces/stripe/IStripeDescription';
 import { CURRENCY_CODE } from '../../../../@shared/constants/config';
 import { IShoppingCart } from '../../../core/Interfaces/IShoppingCart';
 import { ICharge } from '../../../core/Interfaces/stripe/ICharge';
-import { IMail } from '../../../core/Interfaces/IMail';
 import { MailService } from '../../../../services/mail.service';
 import { IStock } from '@shop/core/Interfaces/IStock';
 import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { basicAlert } from '../../../../@shared/alerts/toasts';
 import { SaleService } from '../../../../services/sales.service';
-import { ISale } from '@shop/core/Interfaces/ISale';
 
 @Component({
   selector: 'app-checkout',
@@ -47,7 +45,6 @@ export class CheckoutComponent implements OnInit  {
     private shoppingCartService: ShoppingCartService,
     private customerService: CustomerService,
     private chargesService: ChargesService,
-    private mailService: MailService,
     private saleService: SaleService) {
 
       //****************************************************************************************************************************************************************************************************
@@ -131,7 +128,11 @@ export class CheckoutComponent implements OnInit  {
           this.chargesService.pay(payment, stockManage).pipe(take(1)).subscribe( async (result: {status: boolean, message: string, charge: ICharge}) => {
             if ( result.status) {
               await infoEventAlert('Pedido realizado correctamente', 'Pedido efectuado correctamente. ¡¡Gracias por tu compra!!', TYPE_ALERT.SUCCESS);
-              this.saleService.addOperation(result.charge, 'stripe').subscribe()
+              this.saleService.addOperation(result.charge, 'stripe').subscribe( (result) => {
+                if(!result.status) {
+                  //enviar correo al admin de que no se guardó 
+                }
+              })
               this.router.navigate(['/orders']);
               this.shoppingCartService.clear();
             } else {
@@ -269,7 +270,11 @@ export class CheckoutComponent implements OnInit  {
     },
     onApprove: (data, actions) => {
       actions.order.get().then(details => {
-        this.saleService.addOperation(details, 'paypal').subscribe()
+        this.saleService.addOperation(details, 'paypal').subscribe( (result) => {
+          if(!result.status) {
+            //enviar correo al admin de que no se guardó 
+          }
+        })
         this.router.navigate(['/orders']);
         this.shoppingCartService.clear();
       });
@@ -284,8 +289,7 @@ export class CheckoutComponent implements OnInit  {
       console.log('OnError', err);
       infoEventAlert('Error en la transación','')
     },
-    onClick: (data, actions) => {
-    },
+    onClick: (data, actions) => {},
   };
   }
 
@@ -303,70 +307,13 @@ export class CheckoutComponent implements OnInit  {
             value: value.price
             }
           }
-          );
+      );
     }
 
     return items
   }
 
-  manageOperation(sale: any, type: string) {
 
-    if ( type === 'stripe') {
-
-        const operation: ISale = {
-            operationId: sale.id,
-            emailAdress: this.meData.user.email,
-            clientName: this.meData.user.name,
-            clientPlatformId: sale.customer,
-            url: sale.receiptUrl ,
-            date: sale.created ,
-            status: sale.status,
-            platform: 'stripe',
-            totalOperation: sale.amount,
-            active: true
-        }
-        this.sendEmail(operation)
-        return operation
-    }
-
-    if ( type === 'paypal') {
-
-        const operation: ISale = {
-            operationId: sale.id,
-            emailAdress: this.meData.user.email,
-            clientName: this.meData.user.name,
-            clientPlatformId: sale.payer.payer_id,
-            url: sale.links[0].href ,
-            date: sale.create_time ,
-            status: sale.status,
-            platform: 'paypal',
-            totalOperation: sale.purchase_units[0].amount.value,
-            active: true
-        }
-        this.sendEmail(operation)
-        return operation
-    }
-
-
-    
-}
-
-  sendEmail(operation: ISale) {
-    
-    const mail: IMail = {
-      to: [operation.emailAdress, 'onlineshoprsf@gmail.com'],
-      subject: 'Confirmación del pedido',
-      html: `
-      <h6> Gracias por confiar en nosotros!! </h6>
-      <p> Estamos muy contentos de que hayas realizado el pedido con nosotros</p>
-      <p>El pedido se ha realizado correctamente. Puedes consultarlo aquí: <a href="${operation.url}" target="_blanck">Click</a></P>
-      <p> Esperamos que disfrute de su compra</p>
-      <p> Muchas gracias!! </p>
-      <p> Saludos de parte de todo el equipo! :)</p>
-      `
-    }
-    this.mailService.sendEmail(mail).pipe(take(1)).subscribe();
-  }
 
 }
 

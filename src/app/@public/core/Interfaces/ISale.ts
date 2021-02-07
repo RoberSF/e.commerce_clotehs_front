@@ -9,4 +9,5 @@ export interface ISale {
     platform: string
     totalOperation: string
     active: boolean
+    description: Array<object>
 }

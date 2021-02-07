@@ -9,6 +9,7 @@ import { IMeData } from '@shop/core/Interfaces/ISession';
 import { Router } from '@angular/router';
 import { MailService } from './mail.service';
 import { IMail } from '@shop/core/Interfaces/IMail';
+import { ShoppingCartService } from './shopping-cart.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class SaleService extends ApiService {
 
 meData: IMeData;
  
-  constructor(apollo: Apollo, public authService: AuthService, private router: Router, private mailService: MailService) {
+  constructor(apollo: Apollo, public authService: AuthService, private router: Router, private mailService: MailService, private shoppingCartService: ShoppingCartService) {
     super(apollo);
 
     this.authService.accessVar$.subscribe( (data: IMeData) => { 
@@ -33,9 +34,7 @@ meData: IMeData;
 addOperation(info: any, type: string) {
     
   const sale = this.manageOperation(info, type)
-  console.log(sale);
       return this.set(ADD_SALE,{sale}, {}).pipe(map( (result: any) => {
-          console.log(result);
           return result.addSale;
         }));
 }
@@ -69,8 +68,9 @@ addOperation(info: any, type: string) {
 
 manageOperation(sale: any, type: string) {
 
-    if ( type === 'stripe') {
 
+    if ( type === 'stripe') {
+  
         const operation: ISale = {
             operationId: sale.id,
             emailAdress: this.meData.user.email,
@@ -78,18 +78,20 @@ manageOperation(sale: any, type: string) {
             clientPlatformId: sale.customer,
             url: sale.receiptUrl ,
             date: sale.created ,
-            status: sale.status,
+            status: sale.status === 'succeeded' ? 'COMPLETED' : 'NOT COMPLETED',
             platform: 'stripe',
             totalOperation: sale.amount.toString(),
-            active: true
+            active: true,
+            description: this.manageDescription()
         }
+        //console.log(operation);
         this.sendEmail(operation)
         return operation
     }
 
     if ( type === 'paypal') {
 
-        const operation: ISale = {
+      const operation: ISale = {
             operationId: sale.id,
             emailAdress: this.meData.user.email,
             clientName: this.meData.user.name,
@@ -99,14 +101,31 @@ manageOperation(sale: any, type: string) {
             status: sale.status,
             platform: 'paypal',
             totalOperation: sale.purchase_units[0].amount.value,
-            active: true
+            active: true,
+            description: this.manageDescription()
         }
         this.sendEmail(operation)
         return operation
     }
+ 
+}
+
+manageDescription() {
+
+  let descriptionArray = []
+
+  this.shoppingCartService.shoppingCart.products.map( (item) => {
 
 
-    
+    let description = {
+      name: item.name,
+      qty: item.qty.toString(),
+      price: item.price.toString()
+    }
+    descriptionArray.push(description)
+  })
+
+  return descriptionArray
 }
 
 sendEmail(operation: ISale) {

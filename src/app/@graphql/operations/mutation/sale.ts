@@ -21,6 +21,11 @@ export const ADD_SALE = gql`
             platform
             totalOperation
             active
+            description {
+              name
+              qty
+              price
+            }
           }
         }
       }
