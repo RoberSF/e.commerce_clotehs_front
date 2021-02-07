@@ -21,6 +21,7 @@ import { IProduct } from '@mugan86/ng-shop-ui/lib/interfaces/product.interface';
 import { IPayPalConfig, ICreateOrderRequest } from 'ngx-paypal';
 import { basicAlert } from '../../../../@shared/alerts/toasts';
 import { SaleService } from '../../../../services/sales.service';
+import { IMail } from '@shop/core/Interfaces/IMail';
 
 @Component({
   selector: 'app-checkout',
@@ -45,6 +46,7 @@ export class CheckoutComponent implements OnInit  {
     private shoppingCartService: ShoppingCartService,
     private customerService: CustomerService,
     private chargesService: ChargesService,
+    private mailService: MailService,
     private saleService: SaleService) {
 
       //****************************************************************************************************************************************************************************************************
@@ -131,6 +133,16 @@ export class CheckoutComponent implements OnInit  {
               this.saleService.addOperation(result.charge, 'stripe').subscribe( (result) => {
                 if(!result.status) {
                   //enviar correo al admin de que no se guardó 
+                  const mail: IMail = {
+                    to: ['onlineshoprsf@gmail.com'],
+                    subject: 'Perdido realizado y no guardado',
+                    html: `
+                    <h6> Error al guardar!! </h6>
+                    <p>El pedido se ha realizado correctamente pero no se ha guardado en la base de datos.
+                     Puedes consultarlo aquí: <a href="${result.sale.url}" target="_blanck">Click</a></P>
+                    `
+                  }
+                  this.mailService.sendEmail(mail).pipe(take(1)).subscribe();
                 }
               })
               this.router.navigate(['/orders']);
@@ -272,7 +284,16 @@ export class CheckoutComponent implements OnInit  {
       actions.order.get().then(details => {
         this.saleService.addOperation(details, 'paypal').subscribe( (result) => {
           if(!result.status) {
-            //enviar correo al admin de que no se guardó 
+            const mail: IMail = {
+              to: ['onlineshoprsf@gmail.com'],
+              subject: 'Perdido realizado y no guardado',
+              html: `
+              <h6> Error al guardar!! </h6>
+              <p>El pedido se ha realizado correctamente pero no se ha guardado en la base de datos.
+               Puedes consultarlo aquí: <a href="${result.sale.url}" target="_blanck">Click</a></P>
+              `
+            }
+            this.mailService.sendEmail(mail).pipe(take(1)).subscribe();
           }
         })
         this.router.navigate(['/orders']);
