@@ -4,17 +4,18 @@ import { RESULT_INFO_FRAGMENT } from '../fragment/result-info';
 export const SALE_LIST_QUERY = gql`
 
     query sales($page: Int!, $itemsPerPage: Int, $active:ActiveFilterEnum) {
-      posts(page: $page, itemsPerPage: $itemsPerPage, active: $active) {
+
+      sales(page: $page, itemsPerPage: $itemsPerPage, active: $active) {
         info {
           ...ResultInfoObject
         }
         status
         message
-        sale {
+        sales {
            id
            operationId
            emailAdress
-           clientName
+           name
            clientPlatformId
            url
            date
@@ -22,6 +23,11 @@ export const SALE_LIST_QUERY = gql`
            platform
            totalOperation
            active
+           description {
+             name
+             qty
+             price
+           }
         }
       }
     }
@@ -38,7 +44,7 @@ export const SALE_QUERY = gql`
            id
            operationId
            emailAdress
-           clientName
+           name
            clientPlatformId
            url
            date
@@ -46,6 +52,11 @@ export const SALE_QUERY = gql`
            platform
            totalOperation
            active
+           description {
+             name
+             qty
+             price
+           }
          }
       }
     }
@@ -62,7 +73,7 @@ export const SEARCH_SALE_QUERY = gql`
            id
            operationId
            emailAdress
-           clientName
+           name
            clientPlatformId
            url
            date
@@ -70,6 +81,11 @@ export const SEARCH_SALE_QUERY = gql`
            platform
            totalOperation
            active
+           description {
+             name
+             qty
+             price
+           }
        }
     }
   }

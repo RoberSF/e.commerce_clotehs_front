@@ -13,7 +13,7 @@ export const ADD_SALE = gql`
           sale {
             operationId
             emailAdress
-            clientName
+            name
             clientPlatformId
             url
             date
@@ -47,7 +47,7 @@ mutation updateSale($id: ID!, $sale: SaleInput!) {
        id
        operationId
        emailAdress
-       clientName
+       name
        clientPlatformId
        url
        date

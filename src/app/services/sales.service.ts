@@ -3,7 +3,7 @@ import { Apollo } from 'apollo-angular';
 import { ApiService } from '@graphql/services/api.service';
 import { map, take } from 'rxjs/operators';
 import { ISale } from '@shop/core/Interfaces/ISale';
-import { ADD_SALE } from '../@graphql/operations/mutation/sale';
+import { ADD_SALE, BLOCK_SALE, UNBLOCK_SALE } from '../@graphql/operations/mutation/sale';
 import { AuthService } from './auth.service';
 import { IMeData } from '@shop/core/Interfaces/ISession';
 import { Router } from '@angular/router';
@@ -50,21 +50,21 @@ addOperation(info: any, type: string) {
 //     }));
 // }
 
-// block(id: string) {
-//   return this.set(
-//     BLOCK_TAG,
-//     {
-//       id
-//     }, {}).pipe(map( (result: any) => {
-//       return result.blockTag;
-//     }));
-// }
+block(id: string) {
+  return this.set(
+    BLOCK_SALE,
+    {
+      id
+    }, {}).pipe(map( (result: any) => {
+      return result.blockSale;
+    }));
+}
 
-// unBlock(id: string) {
-//   return this.set(UNBLOCK_TAG,{id}, {}).pipe(map( (result: any) => {
-//       return result.unBlockTag;
-//     }));
-// }
+unBlock(id: string) {
+  return this.set(UNBLOCK_SALE,{id}, {}).pipe(map( (result: any) => {
+      return result.unBlockSale;
+    }));
+}
 
 manageOperation(sale: any, type: string) {
 
@@ -74,7 +74,7 @@ manageOperation(sale: any, type: string) {
         const operation: ISale = {
             operationId: sale.id,
             emailAdress: this.meData.user.email,
-            clientName: this.meData.user.name,
+            name: this.meData.user.name,
             clientPlatformId: sale.customer,
             url: sale.receiptUrl ,
             date: sale.created ,
@@ -94,7 +94,7 @@ manageOperation(sale: any, type: string) {
       const operation: ISale = {
             operationId: sale.id,
             emailAdress: this.meData.user.email,
-            clientName: this.meData.user.name,
+            name: this.meData.user.name,
             clientPlatformId: sale.payer.payer_id,
             url: sale.links[0].href ,
             date: sale.create_time ,
@@ -143,7 +143,7 @@ sendEmail(operation: ISale) {
       `
     }
     this.mailService.sendEmail(mail).pipe(take(1)).subscribe();
-  }
+}
 
 }
 

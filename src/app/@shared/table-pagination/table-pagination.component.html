@@ -31,6 +31,7 @@
                 <th scope="col" *ngFor="let column of tableColumns">{{column.label}}</th>
                 <th *ngIf="resultData.listKey === 'products'" scope="col">Size</th>
                 <th *ngIf="resultData.listKey === 'products'" scope="col">Color</th>
+                <th *ngIf="resultData.listKey === 'sales'" scope="col">Descripcion</th>
                 <th scope="col">Gestión</th>
             </tr>
         </thead>
@@ -59,6 +60,9 @@
 
                 <td *ngIf="resultData.listKey === 'products'">
                     <span *ngFor="let colors of data.colorInfo">{{colors.name}}/</span>
+                </td>
+                <td *ngIf="resultData.listKey === 'sales'">
+                    <span *ngFor="let saleDescription of data.description">{{saleDescription.name}}X/{{saleDescription.qty}}<br></span>
                 </td>
 
 

@@ -35,6 +35,11 @@
         "icon": "fas fa-atlas"
     },
     {
+        "url": "/admin/sales",
+        "label": "Ventas",
+        "icon": "fas fa-atlas"
+    },
+    {
         "url": "/admin/posts",
         "label": "Posts",
         "icon": "fas fa-atlas",

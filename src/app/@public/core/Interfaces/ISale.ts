@@ -1,7 +1,7 @@
 export interface ISale {
     operationId: string
     emailAdress: string
-    clientName: string
+    name: string
     clientPlatformId: string
     url: string
     date: string

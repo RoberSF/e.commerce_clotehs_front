@@ -1,0 +1,8 @@
+<div class="container-fluid">
+    <app-search-bar (searchValue)="search($event)"></app-search-bar>
+</div>
+
+
+<app-table-pagination (manageItem)="buttonsEdit($event)" [searchValue]="searchValue$" [reload]="reload$" [filterActiveValue]="filterActiveValue" [query]="query" [context]="context" [itemsPerPage]="itemsPerPage" [include]="include" [resultData]="resultData"
+    [tableColumns]="columns">
+</app-table-pagination>

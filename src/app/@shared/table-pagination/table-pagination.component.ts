@@ -142,6 +142,7 @@ ngOnInit(): void {
         this.infoPage.total = data.info.total;
         this.loading = false;
         closeAlert();
+        console.log(data[this.resultData.listKey]);
         return data[this.resultData.listKey];
       })
     )

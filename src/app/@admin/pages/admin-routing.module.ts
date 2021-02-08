@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { AdminGuard } from '../../guards/admin.guard';
 import { CategoriasModule } from './categorias/categorias.module';
+import { SalesModule } from './sales/sales.module';
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
       {
         path: 'posts',
         loadChildren: () => import('./posts/posts.module').then(m => m.PostsModule)
+      },
+      {
+        path: 'sales',
+        loadChildren: () => import('./sales/sales.module').then(m => m.SalesModule)
       },
       {
         path: 'post-edit',
