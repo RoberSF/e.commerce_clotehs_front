@@ -20,7 +20,7 @@ import { WarrantyComponent } from './warranty/warranty.component';
     CommonModule,
     AboutRoutingModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCX-_SYajB1VHjleeMLQxj5GhVhH_8JMeo'  }) , // Necesario para la implementación de Google Maps
+      apiKey: ''  }) , // Necesario para la implementación de Google Maps
   ]
 })
 export class AboutModule { }
